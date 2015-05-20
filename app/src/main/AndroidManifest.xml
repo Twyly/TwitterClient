@@ -51,7 +51,17 @@
         </activity>
         <activity
             android:name=".TimelineActivity"
-            android:label="@string/title_activity_timeline" >
+            android:label="@string/title_activity_timeline"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".DetailTweetActivity"
+            android:label="@string/title_activity_detail_tweet"
+            android:parentActivityName="com.codepath.apps.restclienttemplate.TimelineActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.restclienttemplate.TimelineActivity" />
         </activity>
     </application>
 

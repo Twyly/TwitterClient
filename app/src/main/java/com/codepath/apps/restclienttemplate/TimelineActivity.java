@@ -1,10 +1,14 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -25,7 +29,8 @@ public class TimelineActivity extends ActionBarActivity {
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
 
-    @Override
+    private long maxID = 0;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
@@ -39,6 +44,21 @@ public class TimelineActivity extends ActionBarActivity {
         tweets = new ArrayList<Tweet>();
         aTweets = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(aTweets);
+
+        lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Tweet tweet = tweets.get(position);
+                showDetialActivity(tweet);
+            }
+        });
+
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                fetchTweets();
+            }
+        });
     }
 
     @Override
@@ -55,21 +75,38 @@ public class TimelineActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.miCompose) {
+            Log.d("DEBUG", "SHOW Compose");
+            showComposeDialog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeTweetDialog composeDialog = ComposeTweetDialog.newInstance("Homer");
+        composeDialog.show(fm, "fragment_compose_tweet");
+    }
+
+    private void showDetialActivity(Tweet tweet) {
+        Intent intent = new Intent(TimelineActivity.this, DetailTweetActivity.class);
+        intent.putExtra("tweet", tweet);
+        startActivity(intent);
+    }
+
     // Networking
     private void fetchTweets() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(maxID, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 Log.d("DEBUG", json.toString());
-                aTweets.addAll(Tweet.fromJSONArray(json));
+                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
+                if (!newTweets.isEmpty()) {
+                    maxID = newTweets.get(newTweets.size()-1).getUid()-1;
+                    aTweets.addAll(newTweets);
+                }
             }
 
             @Override
