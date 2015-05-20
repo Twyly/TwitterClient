@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -28,18 +28,18 @@ public class TimelineActivity extends ActionBarActivity {
     private TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
-
-    private long maxID = 0;
+    private SwipeRefreshLayout swipeContainer;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         setupViewsAndAdapter();
         client = TwitterApplication.getRestClient();
-        fetchTweets();
+        fetchTweets(0);
     }
 
     private void setupViewsAndAdapter() {
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<Tweet>();
         aTweets = new TweetsArrayAdapter(this, tweets);
@@ -53,12 +53,27 @@ public class TimelineActivity extends ActionBarActivity {
             }
         });
 
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+
+
+        lvTweets.setOnScrollListener(new EndlessTweetScrollListener(10) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                fetchTweets();
+            public void onLoadMore(long maxID, int totalItemsCount) {
+                fetchTweets(maxID);
             }
         });
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTweets(0);
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
     }
 
     @Override
@@ -97,21 +112,25 @@ public class TimelineActivity extends ActionBarActivity {
     }
 
     // Networking
-    private void fetchTweets() {
+    private void fetchTweets(final long maxID) {
         client.getHomeTimeline(maxID, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 Log.d("DEBUG", json.toString());
+                if (maxID <= 0) {
+                    aTweets.clear();
+                }
                 ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
                 if (!newTweets.isEmpty()) {
-                    maxID = newTweets.get(newTweets.size()-1).getUid()-1;
                     aTweets.addAll(newTweets);
                 }
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
+                Log.d("DEBUG", throwable.toString());
+                swipeContainer.setRefreshing(false);
             }
 
         });
