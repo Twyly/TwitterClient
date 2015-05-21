@@ -20,7 +20,11 @@ public class Tweet implements Parcelable {
     private long uid;
     private User user;
     private String createdAt;
+    private String profileImage;
 
+    public String getProfileImage() {
+        return profileImage;
+    }
     public String getBody() {
         return body;
     }
@@ -58,6 +62,7 @@ public class Tweet implements Parcelable {
             tweet.uid = json.getLong("id");
             tweet.createdAt = json.getString("created_at");
             tweet.user = User.fromJSON(json.getJSONObject("user"));
+            tweet.profileImage = json.getString("profile_image_url_https");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,6 +87,7 @@ public class Tweet implements Parcelable {
         dest.writeLong(uid);
         dest.writeParcelable(user, flags);
         dest.writeString(createdAt);
+        dest.writeString(profileImage);
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -102,6 +108,7 @@ public class Tweet implements Parcelable {
         uid = in.readLong();
         user = in.readParcelable(User.class.getClassLoader());
         createdAt = in.readString();
+        profileImage = in.readString();
     }
 
     public Tweet() {

@@ -17,6 +17,7 @@ public class ComposeTweetDialog extends DialogFragment {
 
     public static ComposeTweetDialog newInstance(String title) {
         ComposeTweetDialog dialog = new ComposeTweetDialog();
+        dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         Bundle args = new Bundle();
         args.putString("title", title);
         dialog.setArguments(args);
@@ -26,8 +27,8 @@ public class ComposeTweetDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_compose_tweet, container);
-        String title = getArguments().getString("title", "Enter Name");
-        getDialog().setTitle(title);
+//        String title = getArguments().getString("title", "Enter Name");
+//        getDialog().setTitle(title);
         return view;
     }
 }
