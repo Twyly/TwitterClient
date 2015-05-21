@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:descendantFocusability="blocksDescendants"
+    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,6 @@
         android:layout_width="@dimen/profile_image_view_length"
         android:layout_height="@dimen/profile_image_view_length"
         android:id="@+id/ivProfileImage"
-        android:layout_margin="10dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -19,20 +19,28 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvUsername"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_alignTop="@id/ivProfileImage"
         android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@id/ivProfileImage"
         android:layout_toLeftOf="@+id/tvTimestamp"
-        android:layout_toStartOf="@+id/tvTimestamp" />
+        android:layout_toStartOf="@+id/tvTimestamp"
+        android:lines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvBody"
+        android:paddingLeft="10dp"
         android:textColor="@color/theme_primary"
         android:layout_below="@+id/tvUsername"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage" />
+        android:layout_alignLeft="@+id/tvUsername"
+        android:layout_alignStart="@id/tvUsername"
+        android:layout_alignRight="@id/tvTimestamp"
+        android:layout_alignEnd="@id/tvTimestamp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +48,7 @@
         android:text="New Text"
         android:id="@+id/tvTimestamp"
         android:textColor="@color/theme_light_detail"
-        android:layout_alignTop="@id/tvUsername"
+        android:layout_alignTop="@+id/tvUsername"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -49,8 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvBody"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage">
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_alignStart="@+id/tvBody"
+        android:layout_alignRight="@+id/tvTimestamp"
+        android:layout_alignEnd="@id/tvTimestamp">
 
         <Button
             style="@style/TweetItemActionButton"
