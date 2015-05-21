@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +22,8 @@ public class Tweet implements Parcelable {
     private User user;
     private String createdAt;
     private String profileImage;
+    private int retweetCount;
+    private int favoriteCount;
 
     public String getProfileImage() {
         return profileImage;
@@ -36,6 +39,12 @@ public class Tweet implements Parcelable {
     }
     public String getCreatedAt() {
         return createdAt;
+    }
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+    public int getRetweetCount() {
+        return retweetCount;
     }
 
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
@@ -62,7 +71,9 @@ public class Tweet implements Parcelable {
             tweet.uid = json.getLong("id");
             tweet.createdAt = json.getString("created_at");
             tweet.user = User.fromJSON(json.getJSONObject("user"));
-            tweet.profileImage = json.getString("profile_image_url_https");
+            tweet.retweetCount = json.getInt("retweet_count");
+            tweet.favoriteCount = json.getInt("favorite_count");
+            //tweet.profileImage = json.getString("profile_image_url_https");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -71,9 +82,6 @@ public class Tweet implements Parcelable {
         return tweet;
     }
 
-    public void Tweet(JSONObject json) {
-
-    }
 
     // Parcelable Implementation
     @Override
@@ -88,6 +96,8 @@ public class Tweet implements Parcelable {
         dest.writeParcelable(user, flags);
         dest.writeString(createdAt);
         dest.writeString(profileImage);
+        dest.writeInt(retweetCount);
+        dest.writeInt(favoriteCount);
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -109,6 +119,8 @@ public class Tweet implements Parcelable {
         user = in.readParcelable(User.class.getClassLoader());
         createdAt = in.readString();
         profileImage = in.readString();
+        retweetCount = in.readInt();
+        favoriteCount = in.readInt();
     }
 
     public Tweet() {

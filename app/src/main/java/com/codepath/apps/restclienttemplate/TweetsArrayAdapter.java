@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView username;
         TextView body;
         TextView timestamp;
+        Button retweet;
+        Button favorite;
     }
 
     private HTMLTextDisplay formatter;
@@ -52,6 +55,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.username = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.body = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.timestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+            viewHolder.retweet = (Button) convertView.findViewById(R.id.btnRetweet);
+            viewHolder.favorite = (Button) convertView.findViewById(R.id.btnFavorite);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -61,6 +66,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.body.setText(tweet.getBody());
         viewHolder.profile.setImageResource(android.R.color.transparent);
         viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+
+        viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
+        viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(roundTransformation()).into(viewHolder.profile);
 //        Picasso.with(getContext()).load(tweet.getProfileImage()).into(viewHolder.profile);
         return convertView;

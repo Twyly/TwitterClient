@@ -51,17 +51,17 @@
         android:layout_toEndOf="@+id/ivProfileImage">
 
         <Button
-            android:text="New Button"
             style="@style/TweetItemActionButton"
-            android:id="@+id/btnReply" />
+            android:id="@+id/btnReply"
+            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
         <Button
-            android:text="New Button"
             style="@style/TweetItemActionButton"
-            android:id="@+id/btnRetweet" />
+            android:id="@+id/btnRetweet"
+            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
         <Button
-            android:text="New Button"
             style="@style/TweetItemActionButton"
-            android:id="@+id/btnFavorite" />
+            android:id="@+id/btnFavorite"
+            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -4,5 +4,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="profile_image_view_length">56dp</dimen>
+    <dimen name="action_button_text_size">12sp</dimen>
 
 </resources>

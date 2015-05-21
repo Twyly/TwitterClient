@@ -11,6 +11,32 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:theme">@style/TwitterActionBarTheme</item>
+
+    </style>
+
+    <style name="TwitterActionBarTheme"
+        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/TwitterActionBar</item>
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/TwitterActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="TwitterActionBar"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:titleTextStyle">@style/TwitterActionBarTitleText</item>
+
+        <item name="background">@android:color/holo_blue_light</item>
+        <item name="titleTextStyle">@style/TwitterActionBarTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="TwitterActionBarTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
     </style>
 
     <style name="TweetItemActionButton" parent="@android:style/Widget.Holo.Button">
@@ -18,6 +44,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:textColor">@color/theme_light_detail</item>
+        <item name="android:textSize">@dimen/action_button_text_size</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_weight">1</item>
     </style>
