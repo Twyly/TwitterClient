@@ -1,7 +1,10 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +34,11 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView timestamp;
     }
 
+    private HTMLTextDisplay formatter;
+
     public TweetsArrayAdapter(Context context, List<Tweet> objects) {
         super(context, 0, objects);
+        formatter = new HTMLTextDisplay(context.getResources());
     }
 
     @Override
@@ -49,15 +57,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.username.setText(tweet.getUser().getName());
+        viewHolder.username.setText(TextUtils.concat(formatter.usernameSpanned(tweet.getUser().getName()), " ", formatter.screenameSpanned(tweet.getUser().getScreenName())));
         viewHolder.body.setText(tweet.getBody());
         viewHolder.profile.setImageResource(android.R.color.transparent);
         viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.profile);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(roundTransformation()).into(viewHolder.profile);
 //        Picasso.with(getContext()).load(tweet.getProfileImage()).into(viewHolder.profile);
-
-
         return convertView;
+    }
+
+    public Transformation roundTransformation() {
+        return new RoundedTransformationBuilder()
+                .cornerRadiusDp(3)
+                .oval(false)
+                .build();
     }
 
     public String getRelativeTimeAgo(String rawJsonDate) {

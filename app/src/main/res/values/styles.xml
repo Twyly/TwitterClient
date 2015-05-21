@@ -13,4 +13,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="TweetItemActionButton" parent="@android:style/Widget.Holo.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:textColor">@color/theme_light_detail</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
 </resources>

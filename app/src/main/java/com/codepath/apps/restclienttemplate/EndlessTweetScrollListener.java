@@ -47,12 +47,7 @@ public abstract class EndlessTweetScrollListener implements AbsListView.OnScroll
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
 
-        Log.d("DEBUG", "Total items " + totalItemCount);
-        Log.d("DEBUG", "Previous items:" + this.previousTotalItemCount);
-
         if (totalItemCount < previousTotalItemCount) {
-            Log.d("DEBUG", Integer.toString(totalItemCount));
-            Log.d("DEBUG", Integer.toString(previousTotalItemCount));
             this.currentMaxID = this.startingMaxID;
             this.previousTotalItemCount = totalItemCount;
             if (totalItemCount == 0) {
@@ -61,10 +56,6 @@ public abstract class EndlessTweetScrollListener implements AbsListView.OnScroll
                 Tweet lastTweet = (Tweet) view.getAdapter().getItem(totalItemCount-1);
                 currentMaxID = lastTweet.getUid();
             }
-
-            Log.d("DEBUG", "Max id:" + this.currentMaxID);
-            Log.d("DEBUG", "Starting id:" + this.startingMaxID);
-            Log.d("DEBUG", Integer.toString(previousTotalItemCount));
         }
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page

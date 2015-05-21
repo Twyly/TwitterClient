@@ -43,6 +43,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:minHeight="100dp"
-        android:hint="@string/compose_hint" />
+        android:hint="@string/compose_hint"
+        android:gravity="top" />
 
 </RelativeLayout>
