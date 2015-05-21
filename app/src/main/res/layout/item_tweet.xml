@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvBody"
+        android:textColor="@color/theme_primary"
         android:layout_below="@+id/tvUsername"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage" />
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvTimestamp"
+        android:textColor="@color/theme_light_detail"
         android:layout_alignTop="@id/tvUsername"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -53,15 +55,15 @@
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnReply"
-            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
+            android:drawableLeft="@drawable/ic_reply"/>
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnRetweet"
-            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
+            android:drawableLeft="@drawable/ic_retweet"/>
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnFavorite"
-            android:drawableLeft="@drawable/abc_spinner_mtrl_am_alpha"/>
+            android:drawableLeft="@drawable/ic_favorite"/>
     </LinearLayout>
 
 </RelativeLayout>
