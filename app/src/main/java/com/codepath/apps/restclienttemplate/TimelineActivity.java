@@ -39,6 +39,12 @@ public class TimelineActivity extends ActionBarActivity {
     }
 
     private void setupViewsAndAdapter() {
+
+        // Add twitter bird
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_bird);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<Tweet>();

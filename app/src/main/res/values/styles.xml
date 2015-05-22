@@ -16,10 +16,13 @@
     </style>
 
     <style name="TwitterActionBarTheme"
-        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        parent="@style/Theme.AppCompat">
+        <!-- .Light.DarkActionBar -->
         <item name="android:actionBarStyle">@style/TwitterActionBar</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_up_action</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/TwitterActionBar</item>
+        <item name="homeAsUpIndicator">@drawable/ic_up_action</item>
     </style>
 
     <!-- ActionBar styles -->
