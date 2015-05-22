@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,29 +43,31 @@ public class DetailTweetAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         switch (getItemViewType(position)) {
             case DETAIL_ROW:
-//                DetailTweetView detailView = (DetailTweetView) convertView;
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_detail, parent, false);
-//
-                    ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
-                    TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
-                    TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
-                    TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
-
-                    ivImage.setImageResource(android.R.color.transparent);
-                    tvUsername.setText(tweet.getUser().getName());
-                    tvScreename.setText(tweet.getUser().getScreenName());
-                    tvTweet.setText(tweet.getBody());
-
-                    Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivImage);
                 }
-//                detailView.setTweet(tweet);
-                return convertView;
+                ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+                TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+                TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
+                TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
+
+                ivImage.setImageResource(android.R.color.transparent);
+                tvUsername.setText(tweet.getUser().getName());
+                tvScreename.setText(tweet.getUser().getScreenName());
+                tvTweet.setText(tweet.getBody());
+
+                Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivImage);                return convertView;
             case STAT_ROW:
 
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_stats, parent, false);
                 }
+
+                Button btnRetweet = (Button) convertView.findViewById(R.id.btnRetweet);
+                Button btnFavorite = (Button) convertView.findViewById(R.id.btnFavorite);
+                btnRetweet.setText(tweet.getRetweetCount() + " RETWEETS");
+                btnFavorite.setText(tweet.getFavoriteCount() + " FAVORITES");
+
                 return convertView;
 
             case ACTION_ROW:
