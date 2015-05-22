@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_base_margin">
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -49,25 +52,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etTweet"
-        android:minHeight="100dp"
-        android:hint="@string/compose_hint"
-        android:gravity="top"
-        android:layout_below="@+id/ivProfile"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btnTweet"
-        android:layout_alignEnd="@+id/btnTweet" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:lines="1"
         android:id="@+id/tvUsername"
+        android:textColor="@color/theme_primary"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_below="@+id/ibCancel"
         android:layout_alignRight="@+id/btnTweet"
@@ -79,10 +70,27 @@
         android:text="New Text"
         android:lines="1"
         android:id="@+id/tvScreenname"
+        android:textColor="@color/theme_light_detail"
         android:layout_alignLeft="@id/tvUsername"
         android:layout_alignStart="@id/tvUsername"
         android:layout_below="@+id/tvUsername"
         android:layout_alignRight="@+id/tvUsername"
         android:layout_alignEnd="@+id/tvUsername" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etTweet"
+        android:minHeight="100dp"
+        android:hint="@string/compose_hint"
+        android:gravity="top"
+        android:background="@android:color/transparent"
+        android:textColor="@color/theme_primary"
+        android:layout_below="@+id/ivProfile"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/btnTweet"
+        android:layout_alignEnd="@+id/btnTweet" />
+
 
 </RelativeLayout>
