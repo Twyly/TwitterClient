@@ -22,6 +22,7 @@ public class SampleModel extends Model {
 	@Column(name = "name")
 	private String name;
 
+
 	public SampleModel() {
 		super();
 	}

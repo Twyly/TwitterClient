@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +30,14 @@ public class DetailTweetAdapter extends BaseAdapter {
 
     private Tweet tweet;
     private Context context;
+    private HTMLTextDisplay formatter;
+
 
 
     public DetailTweetAdapter(Context context, Tweet tweet) {
         this.context = context;
         this.tweet = tweet;
+        this.formatter = new HTMLTextDisplay(context.getResources());
     }
 
     public Context getContext() {
@@ -46,39 +51,50 @@ public class DetailTweetAdapter extends BaseAdapter {
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_detail, parent, false);
                 }
-                ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
-                TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
-                TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
-                TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
-
-                ivImage.setImageResource(android.R.color.transparent);
-                tvUsername.setText(tweet.getUser().getName());
-                tvScreename.setText(tweet.getUser().getScreenName());
-                tvTweet.setText(tweet.getBody());
-
-                Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivImage);                return convertView;
+                configureDetailRow(convertView);
+               return convertView;
             case STAT_ROW:
-
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_stats, parent, false);
                 }
-
-                Button btnRetweet = (Button) convertView.findViewById(R.id.btnRetweet);
-                Button btnFavorite = (Button) convertView.findViewById(R.id.btnFavorite);
-                btnRetweet.setText(tweet.getRetweetCount() + " RETWEETS");
-                btnFavorite.setText(tweet.getFavoriteCount() + " FAVORITES");
-
+                configureStatsRow(convertView);
                 return convertView;
-
             case ACTION_ROW:
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_action, parent, false);
                 }
+                configureActionRow(convertView);
                 return convertView;
             default:
                 break;
         }
         return convertView;
+    }
+
+    private void configureDetailRow(View convertView) {
+        ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+        TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
+        TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
+        TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+        ivImage.setImageResource(android.R.color.transparent);
+        tvUsername.setText(formatter.usernameSpanned(tweet.getUser().getName()));
+        tvScreename.setText(formatter.screenameSpanned(tweet.getUser().getScreenName()));
+        tvTweet.setText(tweet.getBody());
+        tvTimestamp.setText(tweet.getCreatedAt());
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivImage);
+
+    }
+
+    private void configureStatsRow(View convertView) {
+        Button btnRetweet = (Button) convertView.findViewById(R.id.btnRetweet);
+        Button btnFavorite = (Button) convertView.findViewById(R.id.btnFavorite);
+        btnRetweet.setText(formatter.statSpanned("RETWEET", tweet.getRetweetCount()));
+        btnFavorite.setText(formatter.statSpanned("FAVORITE", tweet.getFavoriteCount()));
+    }
+
+    private void configureActionRow(View convertView) {
+
     }
 
     @Override

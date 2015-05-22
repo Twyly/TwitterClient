@@ -3,17 +3,26 @@ package com.codepath.apps.restclienttemplate.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by teddywyly on 5/18/15.
  */
-public class User implements Parcelable {
+public class User extends Model implements Parcelable {
 
+    @Column(name = "Name")
     private String name;
+    @Column(name = "UID", unique = true)
     private long uid;
+    @Column(name = "Screenname")
     private String screenName;
+    @Column(name = "ProfileImageUrl")
     private String profileImageUrl;
 
     public String getName() {
@@ -47,8 +56,11 @@ public class User implements Parcelable {
         return user;
     }
 
-    // Parcelable
+    public List<Tweet> items() {
+        return getMany(Tweet.class, "User");
+    }
 
+    // Parcelable
 
     @Override
     public int describeContents() {

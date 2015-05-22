@@ -4,6 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.activeandroid.Model;
+
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,15 +19,22 @@ import java.util.ArrayList;
  * Created by teddywyly on 5/18/15.
  */
 
+@Table(name = "Tweets")
+public class Tweet extends Model implements Parcelable {
 
-public class Tweet implements Parcelable {
-
+    @Column(name = "Body")
     private String body;
+    @Column(name = "UID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long uid;
+    @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
+    @Column(name = "CreatedAt", index = true)
     private String createdAt;
+    @Column(name = "ProfileImage")
     private String profileImage;
+    @Column(name = "RetweetCount")
     private int retweetCount;
+    @Column(name = "FavoriteCount")
     private int favoriteCount;
 
     public String getProfileImage() {
@@ -45,6 +57,10 @@ public class Tweet implements Parcelable {
     }
     public int getRetweetCount() {
         return retweetCount;
+    }
+
+    public Tweet() {
+        super();
     }
 
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
@@ -123,7 +139,4 @@ public class Tweet implements Parcelable {
         favoriteCount = in.readInt();
     }
 
-    public Tweet() {
-        //normal actions performed by class, it's still a normal object!
-    }
 }

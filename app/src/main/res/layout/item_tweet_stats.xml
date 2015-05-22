@@ -8,13 +8,16 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
         android:id="@+id/btnRetweet" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
+        android:layout_marginLeft="@dimen/activity_base_margin"
         android:id="@+id/btnFavorite" />
 
 </LinearLayout>

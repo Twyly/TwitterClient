@@ -69,17 +69,11 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
         viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(roundTransformation()).into(viewHolder.profile);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.profile);
 //        Picasso.with(getContext()).load(tweet.getProfileImage()).into(viewHolder.profile);
         return convertView;
     }
 
-    public Transformation roundTransformation() {
-        return new RoundedTransformationBuilder()
-                .cornerRadiusDp(3)
-                .oval(false)
-                .build();
-    }
 
     public String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
