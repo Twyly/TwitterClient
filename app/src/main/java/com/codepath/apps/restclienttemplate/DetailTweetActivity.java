@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -12,6 +13,10 @@ import com.squareup.picasso.Picasso;
 
 
 public class DetailTweetActivity extends ActionBarActivity {
+
+    private DetailTweetAdapter mAdapter;
+    private ListView lvDetail;
+    private Tweet mTweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +27,10 @@ public class DetailTweetActivity extends ActionBarActivity {
     }
 
     private void setupViews() {
-        Tweet tweet = getIntent().getParcelableExtra("tweet");
-        ImageView ivImage = (ImageView) findViewById(R.id.ivImage);
-        TextView tvUsername = (TextView) findViewById(R.id.tvUsername);
-        TextView tvScreename = (TextView) findViewById(R.id.tvScreenname);
-        TextView tvTweet = (TextView) findViewById(R.id.tvTweet);
-
-        tvUsername.setText(tweet.getUser().getName());
-        tvScreename.setText(tweet.getUser().getScreenName());
-        tvTweet.setText(tweet.getBody());
-
-        Picasso.with(this).load(tweet.getUser().getProfileImageUrl()).into(ivImage);
+        mTweet = getIntent().getParcelableExtra("tweet");
+        lvDetail = (ListView) findViewById(R.id.lvDetail);
+        mAdapter = new DetailTweetAdapter(this, mTweet);
+        lvDetail.setAdapter(mAdapter);
 
     }
 
