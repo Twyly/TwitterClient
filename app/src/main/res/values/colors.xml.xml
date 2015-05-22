@@ -2,4 +2,7 @@
 <resources>
     <color name="theme_primary">@android:color/black</color>
     <color name="theme_light_detail">#A5AAAD</color>
+    <color name="theme_caution_dark_red">#9E0008</color>
+    <color name="theme_warning_red">#D73F3C</color>
+
 </resources>

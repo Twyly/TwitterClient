@@ -28,7 +28,7 @@
     <!-- ActionBar styles -->
     <style name="TwitterActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:background">@android:color/holo_blue_light</item>
         <item name="android:titleTextStyle">@style/TwitterActionBarTitleText</item>
 
         <item name="background">@android:color/holo_blue_light</item>

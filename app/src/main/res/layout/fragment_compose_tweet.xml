@@ -2,11 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel_tweet_label"
-        android:id="@+id/btnCancel"
+        android:id="@+id/ibCancel"
+        android:src="@drawable/ic_close"
+        android:background="@android:color/transparent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -15,11 +17,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvCount"
-        android:layout_toRightOf="@+id/btnCancel"
-        android:layout_alignTop="@+id/btnCancel"
+        android:layout_toRightOf="@+id/ibCancel"
+        android:layout_alignTop="@+id/ibCancel"
         android:layout_toLeftOf="@+id/btnTweet"
         android:layout_toStartOf="@+id/btnTweet"
-        android:layout_alignBottom="@+id/btnCancel"
+        android:layout_alignBottom="@+id/ibCancel"
         android:gravity="center_vertical|right"
         android:text="@string/max_tweet_length" />
 
@@ -28,22 +30,59 @@
         android:layout_height="wrap_content"
         android:text="@string/send_tweet_label"
         android:id="@+id/btnTweet"
-        android:layout_alignTop="@+id/btnCancel"
+        android:background="@android:color/holo_blue_light"
+        android:textColor="@android:color/white"
+        android:layout_alignTop="@+id/ibCancel"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/tvCount" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivProfile"
+        android:minWidth="@dimen/profile_image_view_length"
+        android:minHeight="@dimen/profile_image_view_length"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/ibCancel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etTweet"
-        android:layout_below="@+id/btnCancel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:minHeight="100dp"
         android:hint="@string/compose_hint"
-        android:gravity="top" />
+        android:gravity="top"
+        android:layout_below="@+id/ivProfile"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/btnTweet"
+        android:layout_alignEnd="@+id/btnTweet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:lines="1"
+        android:id="@+id/tvUsername"
+        android:layout_toRightOf="@+id/ivProfile"
+        android:layout_below="@+id/ibCancel"
+        android:layout_alignRight="@+id/btnTweet"
+        android:layout_alignEnd="@+id/btnTweet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:lines="1"
+        android:id="@+id/tvScreenname"
+        android:layout_alignLeft="@id/tvUsername"
+        android:layout_alignStart="@id/tvUsername"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignRight="@+id/tvUsername"
+        android:layout_alignEnd="@+id/tvUsername" />
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 /**
@@ -19,7 +20,7 @@ public class ComposeTweetDialog extends DialogFragment {
     private EditText etTweet;
     private TextView tvCount;
     private Button btnTweet;
-    private Button btnCancel;
+    private ImageButton ibCancel;
     private int textCount;
 
     public ComposeTweetDialog() {
@@ -43,7 +44,7 @@ public class ComposeTweetDialog extends DialogFragment {
         textCount = Integer.parseInt(tvCount.getText().toString());
 
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
-        btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        ibCancel = (ImageButton) view.findViewById(R.id.ibCancel);
 
         setupButtonListeners();
 
@@ -61,7 +62,18 @@ public class ComposeTweetDialog extends DialogFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 int count = textCount - s.length();
+                if (count < 20) {
+                    // Set to some shade to Red
+                    if (count < 11) {
+                        tvCount.setTextColor(getResources().getColor(R.color.theme_warning_red));
+                    } else {
+                        tvCount.setTextColor(getResources().getColor(R.color.theme_caution_dark_red));
+                    }
+                } else {
+                    tvCount.setTextColor(getResources().getColor(R.color.theme_light_detail));
+                }
                 tvCount.setText(Integer.toString(count));
+                //btnTweet.setActivated(!(count == textCount || count < 0));
             }
         });
         return view;
@@ -74,8 +86,7 @@ public class ComposeTweetDialog extends DialogFragment {
                 dismiss();
             }
         });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        ibCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
