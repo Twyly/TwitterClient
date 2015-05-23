@@ -65,7 +65,6 @@ public class ComposeTweetDialog extends DialogFragment {
 
         client = TwitterApplication.getRestClient();
 
-
         setupButtonListeners();
 
         User user = getArguments().getParcelable("user");
@@ -76,6 +75,8 @@ public class ComposeTweetDialog extends DialogFragment {
         tvUsername.setText(user.getName());
         tvScreenname.setText(user.getScreenName());
         Picasso.with(getActivity()).load(user.getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfile);
+
+        setSubmitEnabled();
 
         etTweet.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,11 +103,17 @@ public class ComposeTweetDialog extends DialogFragment {
                     tvCount.setTextColor(getResources().getColor(R.color.theme_light_detail));
                 }
                 tvCount.setText(Integer.toString(count));
-                //btnTweet.setActivated(!(count == textCount || count < 0));
+                setSubmitEnabled();
             }
         });
         return view;
     }
+
+    private void setSubmitEnabled() {
+        int count = textCount - etTweet.getText().toString().length();
+        btnTweet.setEnabled(!(count == textCount || count < 0));
+    }
+
 
     @Override
     public void onAttach(Activity activity) {

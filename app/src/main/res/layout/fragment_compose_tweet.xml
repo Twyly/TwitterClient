@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:padding="@dimen/activity_base_margin">
 
     <ImageButton
@@ -36,7 +37,8 @@
         android:layout_height="wrap_content"
         android:text="@string/send_tweet_label"
         android:id="@+id/btnTweet"
-        android:background="@android:color/holo_blue_light"
+        android:background="@drawable/tweet_background_selector"
+
         android:textColor="@android:color/white"
         android:layout_alignTop="@+id/ibCancel"
         android:layout_alignParentRight="true"
