@@ -29,12 +29,13 @@
         android:lines="1"
         android:ellipsize="end" />
 
-    <TextView
+    <com.codepath.apps.restclienttemplate.LinkifiedTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvBody"
         android:paddingLeft="10dp"
+        android:autoLink="all"
         android:textColor="@color/theme_primary"
         android:layout_below="@+id/tvUsername"
         android:layout_alignLeft="@+id/tvUsername"

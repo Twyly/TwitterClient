@@ -1,9 +1,11 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by teddywyly on 5/19/15.
@@ -26,6 +34,12 @@ public class ComposeTweetDialog extends DialogFragment {
     private Button btnTweet;
     private ImageButton ibCancel;
     private int textCount;
+    private TwitterClient client;
+
+    public interface ComposteTweetDialogListener {
+        void onFinishComposeTweet(Tweet tweet);
+    }
+
 
     public ComposeTweetDialog() {
 
@@ -48,6 +62,9 @@ public class ComposeTweetDialog extends DialogFragment {
         textCount = Integer.parseInt(tvCount.getText().toString());
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
         ibCancel = (ImageButton) view.findViewById(R.id.ibCancel);
+
+        client = TwitterApplication.getRestClient();
+
 
         setupButtonListeners();
 
@@ -91,11 +108,37 @@ public class ComposeTweetDialog extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            ComposteTweetDialogListener listener = (ComposteTweetDialogListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
     private void setupButtonListeners() {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                client.tweet(etTweet.getText().toString(), new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Tweet newTweet = Tweet.fromJSON(response);
+                        ComposteTweetDialogListener listener = (ComposteTweetDialogListener) getActivity();
+                        listener.onFinishComposeTweet(newTweet);
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Log.d("DEBUG", errorResponse.toString());
+                        // Handle error
+                    }
+
+                });
             }
         });
         ibCancel.setOnClickListener(new View.OnClickListener() {

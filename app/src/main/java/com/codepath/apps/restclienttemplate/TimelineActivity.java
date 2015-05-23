@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class TimelineActivity extends ActionBarActivity {
+public class TimelineActivity extends ActionBarActivity implements ComposeTweetDialog.ComposteTweetDialogListener {
 
     private TwitterClient client;
     private TweetsArrayAdapter aTweets;
@@ -81,6 +83,7 @@ public class TimelineActivity extends ActionBarActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,7 +164,12 @@ public class TimelineActivity extends ActionBarActivity {
             });
         }
 
+    }
 
+    // ComposeTweetDialogListener
+    @Override
+    public void onFinishComposeTweet(Tweet tweet) {
+        aTweets.insert(tweet, 0);
     }
 
 }
