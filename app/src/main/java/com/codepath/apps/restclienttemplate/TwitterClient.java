@@ -57,6 +57,12 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiURL, params, handler);
     }
 
+	// Verify Credentials
+	public void getCurrentUser(AsyncHttpResponseHandler handler) {
+		String apiURL = getApiUrl("account/verify_credentials.json");
+		getClient().get(apiURL, null, handler);
+	}
+
     // Compose Tweet
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

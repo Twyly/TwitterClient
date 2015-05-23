@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.codepath.apps.restclienttemplate.models.User;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by teddywyly on 5/19/15.
@@ -27,11 +31,11 @@ public class ComposeTweetDialog extends DialogFragment {
 
     }
 
-    public static ComposeTweetDialog newInstance(String title) {
+    public static ComposeTweetDialog newInstance(User user) {
         ComposeTweetDialog dialog = new ComposeTweetDialog();
         dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putParcelable("user", user);
         dialog.setArguments(args);
         return dialog;
     }
@@ -42,11 +46,19 @@ public class ComposeTweetDialog extends DialogFragment {
         etTweet = (EditText) view.findViewById(R.id.etTweet);
         tvCount = (TextView) view.findViewById(R.id.tvCount);
         textCount = Integer.parseInt(tvCount.getText().toString());
-
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
         ibCancel = (ImageButton) view.findViewById(R.id.ibCancel);
 
         setupButtonListeners();
+
+        User user = getArguments().getParcelable("user");
+        TextView tvUsername = (TextView) view.findViewById(R.id.tvUsername);
+        TextView tvScreenname = (TextView) view.findViewById(R.id.tvScreenname);
+        ImageView ivProfile = (ImageView) view.findViewById(R.id.ivProfile);
+
+        tvUsername.setText(user.getName());
+        tvScreenname.setText(user.getScreenName());
+        Picasso.with(getActivity()).load(user.getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfile);
 
         etTweet.addTextChangedListener(new TextWatcher() {
             @Override

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -29,6 +30,7 @@ public class TimelineActivity extends ActionBarActivity {
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
+    private User currentUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,6 @@ public class TimelineActivity extends ActionBarActivity {
         });
 
 
-
         lvTweets.setOnScrollListener(new EndlessTweetScrollListener(10) {
             @Override
             public void onLoadMore(long maxID, int totalItemsCount) {
@@ -79,7 +80,6 @@ public class TimelineActivity extends ActionBarActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
     }
 
     @Override
@@ -106,9 +106,12 @@ public class TimelineActivity extends ActionBarActivity {
     }
 
     private void showComposeDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        ComposeTweetDialog composeDialog = ComposeTweetDialog.newInstance("Homer");
-        composeDialog.show(fm, "fragment_compose_tweet");
+        if (currentUser != null) {
+            FragmentManager fm = getSupportFragmentManager();
+            ComposeTweetDialog composeDialog = ComposeTweetDialog.newInstance(currentUser);
+            composeDialog.show(fm, "fragment_compose_tweet");
+        }
+        // Possibly ask to authenticate
     }
 
     private void showDetialActivity(Tweet tweet) {
@@ -119,27 +122,44 @@ public class TimelineActivity extends ActionBarActivity {
 
     // Networking
     private void fetchTweets(final long maxID) {
-        client.getHomeTimeline(maxID, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                Log.d("DEBUG", json.toString());
-                if (maxID <= 0) {
-                    aTweets.clear();
-                }
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
-                if (!newTweets.isEmpty()) {
-                    aTweets.addAll(newTweets);
-                }
-                swipeContainer.setRefreshing(false);
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", throwable.toString());
-                swipeContainer.setRefreshing(false);
-            }
+        if (currentUser == null) {
+            client.getCurrentUser(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("DEBUG", response.toString());
+                    currentUser = User.fromJSON(response);
+                    fetchTweets(maxID);
+                }
 
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    // Display Error to User
+                }
+            });
+        } else {
+            client.getHomeTimeline(maxID, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                    Log.d("DEBUG", json.toString());
+                    if (maxID <= 0) {
+                        aTweets.clear();
+                    }
+                    ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
+                    if (!newTweets.isEmpty()) {
+                        aTweets.addAll(newTweets);
+                    }
+                    swipeContainer.setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DEBUG", throwable.toString());
+                    swipeContainer.setRefreshing(false);
+                }
+
+            });
+        }
 
 
     }
