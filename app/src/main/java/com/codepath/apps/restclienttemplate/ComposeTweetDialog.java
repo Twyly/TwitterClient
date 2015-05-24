@@ -92,8 +92,8 @@ public class ComposeTweetDialog extends DialogFragment {
         tvScreenname.setText(user.getScreenName());
         Picasso.with(getActivity()).load(user.getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfile);
 
-        setSubmitEnabled();
-
+        updateUIForTextChange();
+        
         etTweet.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -107,22 +107,26 @@ public class ComposeTweetDialog extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int count = textCount - s.length();
-                if (count < 20) {
-                    // Set to some shade to Red
-                    if (count < 11) {
-                        tvCount.setTextColor(getResources().getColor(R.color.theme_warning_red));
-                    } else {
-                        tvCount.setTextColor(getResources().getColor(R.color.theme_caution_dark_red));
-                    }
-                } else {
-                    tvCount.setTextColor(getResources().getColor(R.color.theme_light_detail));
-                }
-                tvCount.setText(Integer.toString(count));
-                setSubmitEnabled();
+                updateUIForTextChange();
             }
         });
         return view;
+    }
+
+    private void updateUIForTextChange() {
+        int count = textCount - etTweet.length();
+        if (count < 20) {
+            // Set to some shade to Red
+            if (count < 11) {
+                tvCount.setTextColor(getResources().getColor(R.color.theme_warning_red));
+            } else {
+                tvCount.setTextColor(getResources().getColor(R.color.theme_caution_dark_red));
+            }
+        } else {
+            tvCount.setTextColor(getResources().getColor(R.color.theme_light_detail));
+        }
+        tvCount.setText(Integer.toString(count));
+        setSubmitEnabled();
     }
 
     private void setSubmitEnabled() {
