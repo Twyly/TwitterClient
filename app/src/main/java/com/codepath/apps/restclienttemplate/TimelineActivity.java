@@ -52,7 +52,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<Tweet>();
-        aTweets = new TweetsArrayAdapter(this, tweets);
+        aTweets = new TweetsArrayAdapter(this, tweets, lvTweets);
         lvTweets.setAdapter(aTweets);
 
         lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,18 +101,24 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
         if (id == R.id.miCompose) {
             Log.d("DEBUG", "SHOW Compose");
-            showComposeDialog();
+            showComposeDialog(null);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void showComposeDialog() {
+    public void showComposeDialog(Tweet tweet) {
         if (currentUser != null) {
             FragmentManager fm = getSupportFragmentManager();
-            ComposeTweetDialog composeDialog = ComposeTweetDialog.newInstance(currentUser);
+            ComposeTweetDialog composeDialog;
+            if (tweet != null) {
+                composeDialog = ComposeTweetDialog.newInstance(currentUser, tweet);
+            } else {
+                composeDialog = ComposeTweetDialog.newInstance(currentUser);
+            }
             composeDialog.show(fm, "fragment_compose_tweet");
+
         }
         // Possibly ask to authenticate
     }
@@ -120,6 +126,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
     private void showDetialActivity(Tweet tweet) {
         Intent intent = new Intent(TimelineActivity.this, DetailTweetActivity.class);
         intent.putExtra("tweet", tweet);
+        intent.putExtra("user", currentUser);
         startActivity(intent);
     }
 

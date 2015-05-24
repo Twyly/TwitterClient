@@ -1,9 +1,11 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.animation.TimeAnimator;
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -35,17 +38,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView timestamp;
         Button retweet;
         Button favorite;
+        Button reply;
     }
 
     private HTMLTextDisplay formatter;
+    private ListView listView;
 
-    public TweetsArrayAdapter(Context context, List<Tweet> objects) {
+    public TweetsArrayAdapter(Context context, List<Tweet> objects, ListView listView) {
         super(context, 0, objects);
-        formatter = new HTMLTextDisplay(context.getResources());
+        this.listView = listView;
+        this.formatter = new HTMLTextDisplay(context.getResources());
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Tweet tweet = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -57,6 +63,22 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.timestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
             viewHolder.retweet = (Button) convertView.findViewById(R.id.btnRetweet);
             viewHolder.favorite = (Button) convertView.findViewById(R.id.btnFavorite);
+            viewHolder.reply = (Button) convertView.findViewById(R.id.btnReply);
+
+            viewHolder.reply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int positon = listView.getPositionForView(v);
+                    if (position != ListView.INVALID_POSITION) {
+                        Tweet tweet = getItem(position);
+                        // Launch Reply Screen
+                        TimelineActivity activity = (TimelineActivity) getContext();
+                        activity.showComposeDialog(tweet);
+                    }
+                }
+            });
+
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

@@ -10,26 +10,26 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_reply"
         style="@style/TweetActionImageButton"
-        android:id="@+id/button2" />
+        android:id="@+id/ibReply" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_retweet"
         style="@style/TweetActionImageButton"
-        android:id="@+id/button" />
+        android:id="@+id/ibRetweet" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favorite"
         style="@style/TweetActionImageButton"
-        android:id="@+id/button3" />
+        android:id="@+id/ibFavorite" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_share"
         style="@style/TweetActionImageButton"
-        android:id="@+id/button4" />
+        android:id="@+id/ibShare" />
 </LinearLayout>

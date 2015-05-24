@@ -54,6 +54,16 @@ public class ComposeTweetDialog extends DialogFragment {
         return dialog;
     }
 
+    public static ComposeTweetDialog newInstance(User user, Tweet tweet) {
+        ComposeTweetDialog dialog = new ComposeTweetDialog();
+        dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        Bundle args = new Bundle();
+        args.putParcelable("user", user);
+        args.putParcelable("tweet", tweet);
+        dialog.setArguments(args);
+        return dialog;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_compose_tweet, container);
@@ -71,6 +81,12 @@ public class ComposeTweetDialog extends DialogFragment {
         TextView tvUsername = (TextView) view.findViewById(R.id.tvUsername);
         TextView tvScreenname = (TextView) view.findViewById(R.id.tvScreenname);
         ImageView ivProfile = (ImageView) view.findViewById(R.id.ivProfile);
+
+        Tweet tweet = getArguments().getParcelable("tweet");
+        if (tweet != null) {
+            etTweet.setText("@" + tweet.getUser().getScreenName() + " ");
+            etTweet.setSelection(etTweet.getText().length());
+        }
 
         tvUsername.setText(user.getName());
         tvScreenname.setText(user.getScreenName());
@@ -122,7 +138,7 @@ public class ComposeTweetDialog extends DialogFragment {
             ComposteTweetDialogListener listener = (ComposteTweetDialogListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement ComposeTweetDialogListener");
         }
     }
 

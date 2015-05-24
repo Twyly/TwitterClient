@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -27,12 +29,10 @@ public class DetailTweetAdapter extends BaseAdapter {
     public static final int TWEET_ROW = 3;
 
 
-
     private Tweet tweet;
     private Context context;
     private HTMLTextDisplay formatter;
-
-
+    private ListView listView;
 
     public DetailTweetAdapter(Context context, Tweet tweet) {
         this.context = context;
@@ -62,8 +62,9 @@ public class DetailTweetAdapter extends BaseAdapter {
             case ACTION_ROW:
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_action, parent, false);
+                    configureNewActionRow(convertView);
+
                 }
-                configureActionRow(convertView);
                 return convertView;
             default:
                 break;
@@ -93,7 +94,15 @@ public class DetailTweetAdapter extends BaseAdapter {
         btnFavorite.setText(formatter.statSpanned("FAVORITE", tweet.getFavoriteCount()));
     }
 
-    private void configureActionRow(View convertView) {
+    private void configureNewActionRow(View convertView) {
+        ImageButton ibReply = (ImageButton) convertView.findViewById(R.id.ibReply);
+        ibReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailTweetActivity detailActivity = (DetailTweetActivity) getContext();
+                detailActivity.showReplyComposeDialog(tweet);
+            }
+        });
 
     }
 
