@@ -93,7 +93,7 @@ public class ComposeTweetDialog extends DialogFragment {
         Picasso.with(getActivity()).load(user.getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfile);
 
         updateUIForTextChange();
-        
+
         etTweet.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

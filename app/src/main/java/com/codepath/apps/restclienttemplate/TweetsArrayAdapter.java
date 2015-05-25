@@ -1,12 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.animation.TimeAnimator;
 import android.content.Context;
-import android.text.Html;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +11,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.TimeUnits.Day;
+import com.codepath.apps.restclienttemplate.TimeUnits.Hour;
+import com.codepath.apps.restclienttemplate.TimeUnits.Minute;
+import com.codepath.apps.restclienttemplate.TimeUnits.Second;
+import com.codepath.apps.restclienttemplate.TimeUnits.Week;
+import com.codepath.apps.restclienttemplate.TimeUnits.Year;
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,11 +45,31 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     private HTMLTextDisplay formatter;
     private ListView listView;
+    private PrettyTime prettyTime;
 
     public TweetsArrayAdapter(Context context, List<Tweet> objects, ListView listView) {
         super(context, 0, objects);
         this.listView = listView;
         this.formatter = new HTMLTextDisplay(context.getResources());
+        prettyTime = twitterTime();
+    }
+
+    private PrettyTime twitterTime() {
+        PrettyTime p = new PrettyTime();
+        p.clearUnits();
+        Second second = new Second();
+        Minute minute = new Minute();
+        Hour hour = new Hour();
+        Day day = new Day();
+        Week week = new Week();
+        Year year = new Year();
+        p.registerUnit(second, second);
+        p.registerUnit(minute, minute);
+        p.registerUnit(hour, hour);
+        p.registerUnit(day, day);
+        p.registerUnit(week, week);
+        p.registerUnit(year, year);
+        return p;
     }
 
     @Override
@@ -92,26 +114,32 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
         viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.profile);
-//        Picasso.with(getContext()).load(tweet.getProfileImage()).into(viewHolder.profile);
         return convertView;
     }
 
 
-    public String getRelativeTimeAgo(String rawJsonDate) {
+    private String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
-
         String relativeDate = "";
         try {
             long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            return prettyTime.format(new Date(dateMillis));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return relativeDate;
+        return concatinateDateString(relativeDate);
+    }
+
+    private String concatinateDateString(String string) {
+        return string;
+//        string = string.replaceAll("ago", "");
+//        string = string.replaceAll("minute.*", "m");
+//        string = string.replaceAll("hour.*", "h");
+//        string = string.replaceAll("day.*", "d");
+//        return string;
     }
 
 }

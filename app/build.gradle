@@ -34,4 +34,6 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     // Rounded ImageView
     compile 'com.makeramen:roundedimageview:2.0.1'
+    // PrettyTime
+    compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
 }
