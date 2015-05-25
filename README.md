@@ -38,6 +38,7 @@ The following **additional** features are implemented:
 
 * [x] Preview of media can be seen while browsing home timeline
 * [x] User can reply from home timeline
+* [ ] Video media type supported
 
 
 ## Video Walkthrough 
@@ -59,6 +60,8 @@ Describe any challenges encountered while building the app.
 - [Active Android](http://www.activeandroid.com) - ORM used with SQLite
 - [RoundedImageView](https://github.com/vinc3m1/RoundedImageView) - Rounds ImageViews
 - [Pretty Time](http://www.ocpsoft.org/prettytime/) - Time and Date formatter
+- [Calligraphy](https://github.com/chrisjenx/Calligraphy) - Easier Font Setting
+
 
 
 ## License
