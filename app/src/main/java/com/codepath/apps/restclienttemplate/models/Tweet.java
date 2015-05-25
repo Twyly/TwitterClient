@@ -35,12 +35,13 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "favorite_count")
     private int favoriteCount;
 
-    public String getMediaURL() {
-        return mediaURL;
-    }
 
+    // Factor into another class for production
+    @Column(name = "meida_url")
     private String mediaURL;
+    @Column(name = "media_width")
     private int mediaWidth;
+    @Column(name = "media_height")
     private int mediaHeight;
 
     public String getBody() {
@@ -68,6 +69,10 @@ public class Tweet extends Model implements Parcelable {
 
     public int getMediaHeight() {
         return mediaHeight;
+    }
+
+    public String getMediaURL() {
+        return mediaURL;
     }
 
     public Tweet() {
@@ -113,15 +118,9 @@ public class Tweet extends Model implements Parcelable {
                 tweet.mediaURL = media.getJSONObject(0).optString("media_url");
                 JSONObject sizes = media.getJSONObject(0).optJSONObject("sizes");
                 if (sizes != null) {
-                    tweet.mediaWidth = media.getJSONObject(0).getJSONObject("medium").getInt("w");
-                    tweet.mediaHeight = media.getJSONObject(0).getJSONObject("medium").getInt("h");
+                    tweet.mediaWidth = sizes.getJSONObject("small").getInt("w");
+                    tweet.mediaHeight = sizes.getJSONObject("small").getInt("h");
                 }
-            }
-            if (tweet.mediaURL == null) {
-                Log.d("DEBUG", "No Picture");
-
-            } else {
-                Log.d("DEBUG", tweet.mediaURL);
             }
 
         } catch (JSONException e) {
@@ -146,6 +145,9 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(createdAt);
         dest.writeInt(retweetCount);
         dest.writeInt(favoriteCount);
+        dest.writeString(mediaURL);
+        dest.writeInt(mediaWidth);
+        dest.writeInt(mediaHeight);
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -168,6 +170,9 @@ public class Tweet extends Model implements Parcelable {
         createdAt = in.readString();
         retweetCount = in.readInt();
         favoriteCount = in.readInt();
+        mediaURL = in.readString();
+        mediaWidth = in.readInt();
+        mediaHeight = in.readInt();
     }
 
 }

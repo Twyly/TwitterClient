@@ -2,13 +2,16 @@ package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.HTMLTextDisplay;
@@ -120,16 +123,25 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 
         viewHolder.profile.setImageResource(android.R.color.transparent);
-        viewHolder.preview.setImageResource(android.R.color.transparent);
+        viewHolder.preview.setImageResource(0);
 
         viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
         viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.profile);
-        if (tweet.getMediaURL() != null) {
-            Picasso.with(getContext()).load(tweet.getMediaURL()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.preview);
 
+        if (tweet.getMediaURL() != null) {
+            resizeImageView(viewHolder.preview, true);
+            Picasso.with(getContext()).load(tweet.getMediaURL()).placeholder(R.color.theme_text_detail).transform(ProfileImageHelper.roundTransformation()).into(viewHolder.preview);
+        } else {
+            resizeImageView(viewHolder.preview, false);
         }
         return convertView;
+    }
+
+    private void resizeImageView(ImageView imageView, boolean forImage) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+        params.height = forImage ? (int) getContext().getResources().getDimension(R.dimen.preview_image_height) : 0;
+        imageView.setLayoutParams(params);
     }
 
 
@@ -145,16 +157,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             e.printStackTrace();
         }
 
-        return concatinateDateString(relativeDate);
+        return "unknown";
     }
 
-    private String concatinateDateString(String string) {
-        return string;
-//        string = string.replaceAll("ago", "");
-//        string = string.replaceAll("minute.*", "m");
-//        string = string.replaceAll("hour.*", "h");
-//        string = string.replaceAll("day.*", "d");
-//        return string;
-    }
 
 }

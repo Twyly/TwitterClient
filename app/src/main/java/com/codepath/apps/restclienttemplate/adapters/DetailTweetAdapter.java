@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,16 +77,30 @@ public class DetailTweetAdapter extends BaseAdapter {
 
     private void configureDetailRow(View convertView) {
         ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+        ImageView ivMedia = (ImageView) convertView.findViewById(R.id.ivMedia);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
         TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
         TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
         TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+
+
         ivImage.setImageResource(android.R.color.transparent);
+        ivMedia.setImageResource(0);
         tvUsername.setText(formatter.usernameSpanned(tweet.getUser().getName()));
         tvScreename.setText(formatter.screenameSpanned(tweet.getUser().getScreenName()));
         tvTweet.setText(tweet.getBody());
         tvTimestamp.setText(tweet.getCreatedAt());
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivImage);
+
+        if (tweet.getMediaURL() != null) {
+            float ratio = (float)tweet.getMediaWidth()/tweet.getMediaHeight();
+            float width = ivMedia.getMeasuredWidth();
+            int height = (int)(width/ratio);
+            Log.d("RATIO", ratio + "");
+            Log.d("Width", width + "");
+            Log.d("HEIGHT", width/ratio + "");
+            Picasso.with(getContext()).load(tweet.getMediaURL()).transform(ProfileImageHelper.roundTransformation()).placeholder(R.color.theme_text_detail).into(ivMedia);
+        }
 
     }
 

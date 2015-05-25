@@ -3,8 +3,7 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/activity_base_margin">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -58,15 +57,28 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivMedia"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_alignLeft="@id/tvTweet"
+        android:layout_alignStart="@id/tvTweet"
+        android:layout_below="@+id/tvTweet"
+        android:layout_alignRight="@+id/tvTweet"
+        android:layout_alignEnd="@+id/tvTweet"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvTimestamp"
         android:textColor="@color/theme_text_detail"
+        android:layout_marginTop="10dp"
         android:layout_alignLeft="@id/tvTweet"
         android:layout_alignStart="@id/tvTweet"
-        android:layout_below="@+id/tvTweet"
+        android:layout_below="@+id/ivMedia"
         android:layout_alignRight="@+id/tvTweet"
         android:layout_alignEnd="@+id/tvTweet" />
 

@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvBody"
-        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:autoLink="all"
         android:textColor="@color/theme_text_primary"
         android:layout_below="@+id/tvUsername"
@@ -49,13 +50,12 @@
         android:id="@+id/ivPreview"
         android:layout_below="@+id/tvBody"
         android:layout_alignLeft="@+id/tvBody"
-        android:minHeight="50dp"
         android:layout_marginTop="10dp"
         android:layout_alignStart="@+id/tvBody"
         android:layout_alignRight="@+id/tvTimestamp"
         android:layout_alignEnd="@id/tvTimestamp"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
