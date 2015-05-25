@@ -83,6 +83,9 @@ public class DetailTweetAdapter extends BaseAdapter {
         TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
         TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
 
+        ImageView ivRetweetIcon = (ImageView) convertView.findViewById(R.id.ivRetweetIcon);
+        TextView tvRetweet = (TextView) convertView.findViewById(R.id.tvRetweet);
+
 
         ivImage.setImageResource(android.R.color.transparent);
         ivMedia.setImageResource(0);
@@ -100,6 +103,15 @@ public class DetailTweetAdapter extends BaseAdapter {
             Log.d("Width", width + "");
             Log.d("HEIGHT", width/ratio + "");
             Picasso.with(getContext()).load(tweet.getMediaURL()).transform(ProfileImageHelper.roundTransformation()).placeholder(R.color.theme_text_detail).into(ivMedia);
+        }
+
+        if (tweet.getRetweetedFrom() != null) {
+            tvRetweet.setText(tweet.getRetweetedFrom().getName() + " retweeted");
+            tvRetweet.setVisibility(View.VISIBLE);
+            ivRetweetIcon.setVisibility(View.VISIBLE);
+        } else {
+            tvRetweet.setVisibility(View.GONE);
+            ivRetweetIcon.setVisibility(View.GONE);
         }
 
     }
