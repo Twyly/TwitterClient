@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate.activities;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import com.codepath.apps.restclienttemplate.fragments.ComposeTweetDialog;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class DetailTweetActivity extends ActionBarActivity implements ComposeTweetDialog.ComposteTweetDialogListener {
@@ -42,6 +45,11 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
         mAdapter = new DetailTweetAdapter(this, mTweet);
         lvDetail.setAdapter(mAdapter);
 
+    }
+    
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     public void showReplyComposeDialog(Tweet tweet) {

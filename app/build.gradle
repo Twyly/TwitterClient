@@ -36,4 +36,6 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.0.1'
     // PrettyTime
     compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
+    // Custom Fonts
+    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 }
