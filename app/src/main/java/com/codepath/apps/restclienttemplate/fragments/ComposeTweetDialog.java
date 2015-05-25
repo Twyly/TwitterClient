@@ -126,7 +126,7 @@ public class ComposeTweetDialog extends DialogFragment {
                 tvCount.setTextColor(getResources().getColor(R.color.theme_caution_dark_red));
             }
         } else {
-            tvCount.setTextColor(getResources().getColor(R.color.theme_light_detail));
+            tvCount.setTextColor(getResources().getColor(R.color.theme_text_detail));
         }
         tvCount.setText(Integer.toString(count));
         setSubmitEnabled();

@@ -36,7 +36,7 @@
         android:id="@+id/tvBody"
         android:paddingLeft="10dp"
         android:autoLink="all"
-        android:textColor="@color/theme_primary"
+        android:textColor="@color/theme_text_primary"
         android:layout_below="@+id/tvUsername"
         android:layout_alignLeft="@+id/tvUsername"
         android:layout_alignStart="@id/tvUsername"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvTimestamp"
-        android:textColor="@color/theme_light_detail"
+        android:textColor="@color/theme_text_detail"
         android:layout_alignTop="@+id/tvUsername"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

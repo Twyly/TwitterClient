@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Twitter Client</string>
-    <string name="login_label">Connect to Twitter</string>
+    <string name="login_label">Log in</string>
     <string name="title_activity_timeline">Home</string>
 
     <string name="hello_world">Hello world!</string>
@@ -13,5 +13,7 @@
     <string name="send_tweet_label">Tweet</string>
     <string name="compose_hint">What\'s happening?</string>
     <string name="max_tweet_length">140</string>
+    <string name="tutorial_hello">Hello.</string>
+    <string name="tutorial_welcome">Welcome to Twitter.</string>
 
 </resources>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="theme_primary">@android:color/black</color>
-    <color name="theme_light_detail">#A5AAAD</color>
+    <color name="theme_text_primary">@android:color/black</color>
+    <color name="theme_text_detail">#A5AAAD</color>
     <color name="theme_caution_dark_red">#9E0008</color>
     <color name="theme_warning_red">#D73F3C</color>
+    <color name="theme_twitter">@android:color/holo_blue_light</color>
+    <color name="theme_dimmer">#4D000000</color>
 
 </resources>
