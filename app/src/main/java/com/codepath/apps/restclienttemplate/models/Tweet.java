@@ -35,6 +35,14 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "favorite_count")
     private int favoriteCount;
 
+    public String getMediaURL() {
+        return mediaURL;
+    }
+
+    private String mediaURL;
+    private int mediaWidth;
+    private int mediaHeight;
+
     public String getBody() {
         return body;
     }
@@ -52,6 +60,14 @@ public class Tweet extends Model implements Parcelable {
     }
     public int getRetweetCount() {
         return retweetCount;
+    }
+
+    public int getMediaWidth() {
+        return mediaWidth;
+    }
+
+    public int getMediaHeight() {
+        return mediaHeight;
     }
 
     public Tweet() {
@@ -92,6 +108,22 @@ public class Tweet extends Model implements Parcelable {
             tweet.user = User.findOrCreateFromJSON(json.getJSONObject("user"));
             tweet.retweetCount = json.getInt("retweet_count");
             tweet.favoriteCount = json.getInt("favorite_count");
+            JSONArray media = json.getJSONObject("entities").optJSONArray("media");
+            if (media != null) {
+                tweet.mediaURL = media.getJSONObject(0).optString("media_url");
+                JSONObject sizes = media.getJSONObject(0).optJSONObject("sizes");
+                if (sizes != null) {
+                    tweet.mediaWidth = media.getJSONObject(0).getJSONObject("medium").getInt("w");
+                    tweet.mediaHeight = media.getJSONObject(0).getJSONObject("medium").getInt("h");
+                }
+            }
+            if (tweet.mediaURL == null) {
+                Log.d("DEBUG", "No Picture");
+
+            } else {
+                Log.d("DEBUG", tweet.mediaURL);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

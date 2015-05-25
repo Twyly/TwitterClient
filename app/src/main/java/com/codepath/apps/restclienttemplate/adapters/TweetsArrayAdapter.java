@@ -39,6 +39,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     private class ViewHolder {
         ImageView profile;
+        ImageView preview;
         TextView username;
         TextView body;
         TextView timestamp;
@@ -84,6 +85,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
             viewHolder.profile = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            viewHolder.preview = (ImageView) convertView.findViewById(R.id.ivPreview);
             viewHolder.username = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.body = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.timestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
@@ -115,12 +117,18 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         viewHolder.username.setText(TextUtils.concat(formatter.usernameSpanned(tweet.getUser().getName()), " ", formatter.screenameSpanned(tweet.getUser().getScreenName())));
         viewHolder.body.setText(tweet.getBody());
-        viewHolder.profile.setImageResource(android.R.color.transparent);
         viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+
+        viewHolder.profile.setImageResource(android.R.color.transparent);
+        viewHolder.preview.setImageResource(android.R.color.transparent);
 
         viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
         viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.profile);
+        if (tweet.getMediaURL() != null) {
+            Picasso.with(getContext()).load(tweet.getMediaURL()).fit().transform(ProfileImageHelper.roundTransformation()).into(viewHolder.preview);
+
+        }
         return convertView;
     }
 
