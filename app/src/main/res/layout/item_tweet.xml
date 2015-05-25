@@ -42,14 +42,18 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/tvUsername"
+        android:singleLine="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="16sp"
         android:layout_alignTop="@id/ivProfileImage"
         android:layout_toRightOf="@id/ivProfileImage"
         android:layout_toEndOf="@id/ivProfileImage"
         android:layout_toLeftOf="@+id/tvTimestamp"
         android:layout_toStartOf="@+id/tvTimestamp"
-        android:lines="1"
+        android:maxLines="1"
         android:ellipsize="end" />
 
     <com.codepath.apps.restclienttemplate.LinkifiedTextView
@@ -59,6 +63,7 @@
         android:id="@+id/tvBody"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
+        android:textSize="16sp"
         android:autoLink="all"
         android:textColor="@color/theme_text_primary"
         android:layout_below="@+id/tvUsername"

@@ -46,7 +46,7 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
         lvDetail.setAdapter(mAdapter);
 
     }
-    
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));

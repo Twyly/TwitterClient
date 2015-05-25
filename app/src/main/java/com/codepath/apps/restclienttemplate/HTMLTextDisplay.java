@@ -17,7 +17,7 @@ public class HTMLTextDisplay {
     }
 
     public Spanned usernameSpanned(String username) {
-        return Html.fromHtml("<font color=" + resources.getColor(R.color.theme_text_primary) + ">" + username + "</font>");
+        return Html.fromHtml("<b><font color=" + resources.getColor(R.color.theme_text_primary) + ">" + username + "</font></b>");
     }
 
     public Spanned screenameSpanned(String username) {

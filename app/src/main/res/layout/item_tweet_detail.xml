@@ -73,6 +73,7 @@
         android:autoLink="all"
         android:paddingTop="@dimen/activity_base_margin"
         android:paddingBottom="@dimen/activity_base_margin"
+        android:textSize="22sp"
         android:layout_below="@+id/ivImage"
         android:layout_alignStart="@id/ivImage"
         android:layout_alignLeft="@id/ivImage"
