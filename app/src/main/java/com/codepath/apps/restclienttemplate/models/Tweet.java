@@ -35,6 +35,9 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "favorite_count")
     private int favoriteCount;
 
+    @Column(name = "retweeted_from")
+    private User retweetedFrom;
+
 
     // Factor into another class for production
     @Column(name = "meida_url")
@@ -75,9 +78,14 @@ public class Tweet extends Model implements Parcelable {
         return mediaURL;
     }
 
+    public User getRetweetedFrom() {
+        return retweetedFrom;
+    }
+
     public Tweet() {
         super();
     }
+
 
     public static ArrayList<Tweet> saveFromJSONArray(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>();
@@ -107,6 +115,14 @@ public class Tweet extends Model implements Parcelable {
     public static Tweet fromJSON(JSONObject json) {
         Tweet tweet = new Tweet();
         try {
+
+            JSONObject retweetStatus = json.optJSONObject("retweeted_status");
+            if (retweetStatus != null) {
+                tweet = Tweet.fromJSON(retweetStatus);
+                tweet.retweetedFrom = User.findOrCreateFromJSON(json.getJSONObject("user"));
+                return tweet;
+            }
+
             tweet.body = json.getString("text");
             tweet.uid = json.getLong("id");
             tweet.createdAt = json.getString("created_at");
@@ -148,6 +164,7 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(mediaURL);
         dest.writeInt(mediaWidth);
         dest.writeInt(mediaHeight);
+        dest.writeParcelable(retweetedFrom, flags);
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -173,6 +190,7 @@ public class Tweet extends Model implements Parcelable {
         mediaURL = in.readString();
         mediaWidth = in.readInt();
         mediaHeight = in.readInt();
+        retweetedFrom = in.readParcelable(User.class.getClassLoader());
     }
 
 }

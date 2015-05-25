@@ -49,6 +49,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Button retweet;
         Button favorite;
         Button reply;
+
+        ImageView retweetIcon;
+        TextView retweetText;
     }
 
     private HTMLTextDisplay formatter;
@@ -96,6 +99,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.favorite = (Button) convertView.findViewById(R.id.btnFavorite);
             viewHolder.reply = (Button) convertView.findViewById(R.id.btnReply);
 
+            viewHolder.retweetIcon = (ImageView) convertView.findViewById(R.id.ivRetweet);
+            viewHolder.retweetText = (TextView) convertView.findViewById(R.id.tvRetweet);
+
 //            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Gotham-Rounded-Light.ttf");
 //            viewHolder.body.setTypeface(font);
 
@@ -135,6 +141,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         } else {
             resizeImageView(viewHolder.preview, false);
         }
+
+        if (tweet.getRetweetedFrom() != null) {
+            viewHolder.retweetText.setText(tweet.getRetweetedFrom().getName() + " retweeted");
+            viewHolder.retweetText.setVisibility(View.VISIBLE);
+            viewHolder.retweetIcon.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.retweetText.setVisibility(View.GONE);
+            viewHolder.retweetIcon.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 
