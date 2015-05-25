@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -74,6 +75,6 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
 
     @Override
     public void onFinishComposeTweet(Tweet tweet) {
-        //
+            
     }
 }

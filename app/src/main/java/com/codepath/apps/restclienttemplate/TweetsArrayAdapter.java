@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +87,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.retweet = (Button) convertView.findViewById(R.id.btnRetweet);
             viewHolder.favorite = (Button) convertView.findViewById(R.id.btnFavorite);
             viewHolder.reply = (Button) convertView.findViewById(R.id.btnReply);
+
+//            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Gotham-Rounded-Light.ttf");
+//            viewHolder.body.setTypeface(font);
 
             viewHolder.reply.setOnClickListener(new View.OnClickListener() {
                 @Override
