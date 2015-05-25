@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:padding="@dimen/activity_base_margin"
-    tools:context="com.codepath.apps.restclienttemplate.DetailTweetActivity">
+    tools:context="com.codepath.apps.restclienttemplate.activities.DetailTweetActivity">
 
 
     <ListView

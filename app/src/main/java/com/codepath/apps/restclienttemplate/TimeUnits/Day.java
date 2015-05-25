@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.TimeUnits;
+package com.codepath.apps.restclienttemplate.timeunits;
 
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;

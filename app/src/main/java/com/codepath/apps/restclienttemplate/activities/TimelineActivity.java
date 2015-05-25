@@ -1,6 +1,5 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,8 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.codepath.apps.restclienttemplate.adapters.TweetsArrayAdapter;
+import com.codepath.apps.restclienttemplate.fragments.ComposeTweetDialog;
+import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApplication;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -23,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class TimelineActivity extends ActionBarActivity implements ComposeTweetDialog.ComposteTweetDialogListener {
@@ -38,6 +45,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         setupViewsAndAdapter();
+        loadCachedTweets();
         client = TwitterApplication.getRestClient();
         fetchTweets(0);
     }
@@ -82,6 +90,12 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+    private void loadCachedTweets() {
+        List<Tweet> tweets = new Select().from(Tweet.class)
+                .orderBy("created_at").limit(100).execute();
+        aTweets.addAll(tweets);
     }
 
 
@@ -153,9 +167,11 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     Log.d("DEBUG", json.toString());
                     if (maxID <= 0) {
+                        deleteCachedTweetsAndUsers();
                         aTweets.clear();
                     }
-                    ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
+                    ArrayList<Tweet> newTweets = Tweet.saveFromJSONArray(json);
+
                     if (!newTweets.isEmpty()) {
                         aTweets.addAll(newTweets);
                     }
@@ -170,12 +186,17 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
             });
         }
+    }
 
+    private void deleteCachedTweetsAndUsers() {
+        new Delete().from(Tweet.class).execute();
+        new Delete().from(User.class).execute();
     }
 
     // ComposeTweetDialogListener
     @Override
     public void onFinishComposeTweet(Tweet tweet) {
+        tweet.save();
         aTweets.insert(tweet, 0);
     }
 

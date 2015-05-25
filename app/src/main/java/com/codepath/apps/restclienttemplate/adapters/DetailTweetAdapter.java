@@ -1,8 +1,6 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.HTMLTextDisplay;
+import com.codepath.apps.restclienttemplate.ProfileImageHelper;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.activities.DetailTweetActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.squareup.picasso.Picasso;
 

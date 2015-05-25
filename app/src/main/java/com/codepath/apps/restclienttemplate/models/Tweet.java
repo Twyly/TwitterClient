@@ -19,27 +19,22 @@ import java.util.ArrayList;
  * Created by teddywyly on 5/18/15.
  */
 
-@Table(name = "Tweets")
+@Table(name = "tweets")
 public class Tweet extends Model implements Parcelable {
 
-    @Column(name = "Body")
+    @Column(name = "body")
     private String body;
-    @Column(name = "UID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long uid;
-    @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "user", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
-    @Column(name = "CreatedAt", index = true)
+    @Column(name = "created_at", index = true)
     private String createdAt;
-    @Column(name = "ProfileImage")
-    private String profileImage;
-    @Column(name = "RetweetCount")
+    @Column(name = "retweet_count")
     private int retweetCount;
-    @Column(name = "FavoriteCount")
+    @Column(name = "favorite_count")
     private int favoriteCount;
 
-    public String getProfileImage() {
-        return profileImage;
-    }
     public String getBody() {
         return body;
     }
@@ -63,12 +58,12 @@ public class Tweet extends Model implements Parcelable {
         super();
     }
 
-    public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
+    public static ArrayList<Tweet> saveFromJSONArray(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>();
         for (int i=0; i<jsonArray.length(); i++) {
             try {
                 JSONObject tweetJSON = jsonArray.getJSONObject(i);
-                Tweet tweet = Tweet.fromJSON(tweetJSON);
+                Tweet tweet = Tweet.createAndSaveFromJSON(tweetJSON);
                 if (tweet != null) {
                     tweets.add(tweet);
                 }
@@ -80,20 +75,26 @@ public class Tweet extends Model implements Parcelable {
         return tweets;
     }
 
+    public static Tweet createAndSaveFromJSON(JSONObject json) {
+        Tweet tweet = Tweet.fromJSON(json);
+        if (tweet.uid != 0) {
+            tweet.save();
+        }
+        return tweet;
+    }
+
     public static Tweet fromJSON(JSONObject json) {
         Tweet tweet = new Tweet();
         try {
             tweet.body = json.getString("text");
             tweet.uid = json.getLong("id");
             tweet.createdAt = json.getString("created_at");
-            tweet.user = User.fromJSON(json.getJSONObject("user"));
+            tweet.user = User.findOrCreateFromJSON(json.getJSONObject("user"));
             tweet.retweetCount = json.getInt("retweet_count");
             tweet.favoriteCount = json.getInt("favorite_count");
-            //tweet.profileImage = json.getString("profile_image_url_https");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         return tweet;
     }
@@ -111,7 +112,6 @@ public class Tweet extends Model implements Parcelable {
         dest.writeLong(uid);
         dest.writeParcelable(user, flags);
         dest.writeString(createdAt);
-        dest.writeString(profileImage);
         dest.writeInt(retweetCount);
         dest.writeInt(favoriteCount);
     }
@@ -134,7 +134,6 @@ public class Tweet extends Model implements Parcelable {
         uid = in.readLong();
         user = in.readParcelable(User.class.getClassLoader());
         createdAt = in.readString();
-        profileImage = in.readString();
         retweetCount = in.readInt();
         favoriteCount = in.readInt();
     }

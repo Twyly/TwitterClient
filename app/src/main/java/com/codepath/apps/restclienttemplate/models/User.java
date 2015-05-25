@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,15 +16,17 @@ import java.util.List;
 /**
  * Created by teddywyly on 5/18/15.
  */
+
+@Table(name = "users")
 public class User extends Model implements Parcelable {
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
-    @Column(name = "UID", unique = true)
+    @Column(name = "uid", unique = true)
     private long uid;
-    @Column(name = "Screenname")
+    @Column(name = "screen_name")
     private String screenName;
-    @Column(name = "ProfileImageUrl")
+    @Column(name = "profile_image_url")
     private String profileImageUrl;
 
     public String getName() {
@@ -41,6 +45,21 @@ public class User extends Model implements Parcelable {
         return profileImageUrl;
     }
 
+    public static User findOrCreateFromJSON(JSONObject json) {
+        User user = null;
+        try {
+            long unique = json.getLong("id");
+            user = new Select().from(User.class).where("uid = ?" , unique).executeSingle();
+            if (user == null) {
+                user = User.fromJSON(json);
+                user.save();
+            }
+        } catch (JSONException e) {
+            // Hanlde JSONException
+        }
+        return user;
+    }
+
     public static User fromJSON(JSONObject json) {
         User user = new User();
         try {
@@ -57,7 +76,7 @@ public class User extends Model implements Parcelable {
     }
 
     public List<Tweet> items() {
-        return getMany(Tweet.class, "User");
+        return getMany(Tweet.class, "user");
     }
 
     // Parcelable
@@ -93,7 +112,6 @@ public class User extends Model implements Parcelable {
         uid = in.readLong();
         screenName = in.readString();
         profileImageUrl = in.readString();
-
     }
 
     public User() {

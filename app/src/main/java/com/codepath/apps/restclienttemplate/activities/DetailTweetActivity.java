@@ -1,18 +1,17 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.activities;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.adapters.DetailTweetAdapter;
+import com.codepath.apps.restclienttemplate.fragments.ComposeTweetDialog;
+import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
-import com.squareup.picasso.Picasso;
 
 
 public class DetailTweetActivity extends ActionBarActivity implements ComposeTweetDialog.ComposteTweetDialogListener {
@@ -75,6 +74,6 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
 
     @Override
     public void onFinishComposeTweet(Tweet tweet) {
-            
+
     }
 }

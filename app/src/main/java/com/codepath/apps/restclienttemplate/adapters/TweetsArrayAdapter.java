@@ -1,7 +1,6 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.codepath.apps.restclienttemplate.TimeUnits.Day;
-import com.codepath.apps.restclienttemplate.TimeUnits.Hour;
-import com.codepath.apps.restclienttemplate.TimeUnits.Minute;
-import com.codepath.apps.restclienttemplate.TimeUnits.Second;
-import com.codepath.apps.restclienttemplate.TimeUnits.Week;
-import com.codepath.apps.restclienttemplate.TimeUnits.Year;
+import com.codepath.apps.restclienttemplate.HTMLTextDisplay;
+import com.codepath.apps.restclienttemplate.ProfileImageHelper;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.timeunits.Day;
+import com.codepath.apps.restclienttemplate.timeunits.Hour;
+import com.codepath.apps.restclienttemplate.timeunits.Minute;
+import com.codepath.apps.restclienttemplate.timeunits.Second;
+import com.codepath.apps.restclienttemplate.timeunits.Week;
+import com.codepath.apps.restclienttemplate.timeunits.Year;
+import com.codepath.apps.restclienttemplate.activities.TimelineActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.squareup.picasso.Picasso;
 
