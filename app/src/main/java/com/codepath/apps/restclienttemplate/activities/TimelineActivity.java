@@ -95,11 +95,6 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 android.R.color.holo_red_light);
     }
 
-    private void loadCachedTweets() {
-        List<Tweet> tweets = new Select().from(Tweet.class)
-                .orderBy("created_at").limit(100).execute();
-        aTweets.addAll(tweets);
-    }
 
 
     @Override
@@ -194,6 +189,13 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
             });
         }
+    }
+
+    private void loadCachedTweets() {
+        List<Tweet> cachedTweets = new Select().from(Tweet.class)
+                .orderBy("created_at DESC").limit(100).execute();
+        tweets.addAll(cachedTweets);
+        aTweets.addAll(tweets);
     }
 
     private void deleteCachedTweetsAndUsers() {
