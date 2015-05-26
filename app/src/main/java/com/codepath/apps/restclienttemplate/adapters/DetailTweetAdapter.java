@@ -19,6 +19,9 @@ import com.codepath.apps.restclienttemplate.activities.DetailTweetActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by teddywyly on 5/21/15.
  */
@@ -92,7 +95,7 @@ public class DetailTweetAdapter extends BaseAdapter {
         tvUsername.setText(formatter.usernameSpanned(tweet.getUser().getName()));
         tvScreename.setText(formatter.screenameSpanned(tweet.getUser().getScreenName()));
         tvTweet.setText(tweet.getBody());
-        tvTimestamp.setText(tweet.getCreatedAt());
+        tvTimestamp.setText(readableTime(tweet.getTimestamp()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivImage);
 
         if (tweet.getMediaURL() != null) {
@@ -114,6 +117,10 @@ public class DetailTweetAdapter extends BaseAdapter {
             ivRetweetIcon.setVisibility(View.GONE);
         }
 
+    }
+
+    private String readableTime(long timestamp) {
+        return new SimpleDateFormat("M/d/yy, h:m a").format(new Date(timestamp));
     }
 
     private void configureStatsRow(View convertView) {

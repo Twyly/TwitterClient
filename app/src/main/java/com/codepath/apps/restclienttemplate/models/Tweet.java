@@ -13,7 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by teddywyly on 5/18/15.
@@ -28,8 +32,10 @@ public class Tweet extends Model implements Parcelable {
     private long uid;
     @Column(name = "user", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
-    @Column(name = "created_at", index = true)
-    private String createdAt;
+//    @Column(name = "created_at", index = true)
+//    private String createdAt;
+    @Column(name = "timestamp", index = true)
+    private long timestamp;
     @Column(name = "retweet_count")
     private int retweetCount;
     @Column(name = "favorite_count")
@@ -38,9 +44,8 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "retweeted_from")
     private User retweetedFrom;
 
-
     // Factor into another class for production
-    @Column(name = "meida_url")
+    @Column(name = "media_url")
     private String mediaURL;
     @Column(name = "media_width")
     private int mediaWidth;
@@ -56,9 +61,9 @@ public class Tweet extends Model implements Parcelable {
     public User getUser() {
         return user;
     }
-    public String getCreatedAt() {
-        return createdAt;
-    }
+//    public String getCreatedAt() {
+//        return createdAt;
+//    }
     public int getFavoriteCount() {
         return favoriteCount;
     }
@@ -68,6 +73,10 @@ public class Tweet extends Model implements Parcelable {
 
     public int getMediaWidth() {
         return mediaWidth;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public int getMediaHeight() {
@@ -125,7 +134,18 @@ public class Tweet extends Model implements Parcelable {
 
             tweet.body = json.getString("text");
             tweet.uid = json.getLong("id");
-            tweet.createdAt = json.getString("created_at");
+//            tweet.createdAt = json.getString("created_at");
+
+            String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+            SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+            sf.setLenient(true);
+            try {
+                long dateMillis = sf.parse(json.getString("created_at")).getTime();
+                tweet.timestamp = dateMillis;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             tweet.user = User.findOrCreateFromJSON(json.getJSONObject("user"));
             tweet.retweetCount = json.getInt("retweet_count");
             tweet.favoriteCount = json.getInt("favorite_count");
@@ -158,7 +178,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(body);
         dest.writeLong(uid);
         dest.writeParcelable(user, flags);
-        dest.writeString(createdAt);
+//        dest.writeString(createdAt);
+        dest.writeLong(timestamp);
         dest.writeInt(retweetCount);
         dest.writeInt(favoriteCount);
         dest.writeString(mediaURL);
@@ -184,7 +205,8 @@ public class Tweet extends Model implements Parcelable {
         body = in.readString();
         uid = in.readLong();
         user = in.readParcelable(User.class.getClassLoader());
-        createdAt = in.readString();
+//        createdAt = in.readString();
+        timestamp = in.readLong();
         retweetCount = in.readInt();
         favoriteCount = in.readInt();
         mediaURL = in.readString();

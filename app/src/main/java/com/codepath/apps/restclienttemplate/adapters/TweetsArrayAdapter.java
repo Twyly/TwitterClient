@@ -129,7 +129,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         viewHolder.username.setText(TextUtils.concat(formatter.usernameSpanned(tweet.getUser().getName()), " ", formatter.screenameSpanned(tweet.getUser().getScreenName())));
         viewHolder.body.setText(tweet.getBody());
-        viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+        viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getTimestamp()));
 
         viewHolder.profile.setImageResource(android.R.color.transparent);
         viewHolder.preview.setImageResource(0);
@@ -164,19 +164,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     }
 
 
-    private String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-        String relativeDate = "";
-        try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            return prettyTime.format(new Date(dateMillis));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return "unknown";
+    private String getRelativeTimeAgo(long millis) {
+        return prettyTime.format(new Date(millis));
+//        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+//        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+//        sf.setLenient(true);
+//        String relativeDate = "";
+//        try {
+//            long dateMillis = sf.parse(rawJsonDate).getTime();
+//            return prettyTime.format(new Date(dateMillis));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return "unknown";
     }
 
 

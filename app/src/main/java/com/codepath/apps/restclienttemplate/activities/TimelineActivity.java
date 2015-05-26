@@ -193,7 +193,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
     private void loadCachedTweets() {
         List<Tweet> cachedTweets = new Select().from(Tweet.class)
-                .orderBy("created_at DESC").limit(100).execute();
+                .orderBy("timestamp DESC").limit(100).execute();
         tweets.addAll(cachedTweets);
         aTweets.addAll(tweets);
     }
