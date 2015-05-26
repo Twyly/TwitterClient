@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.ErrorHelper;
 import com.codepath.apps.restclienttemplate.views.ProfileImageHelper;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
@@ -154,6 +155,10 @@ public class ComposeTweetDialog extends DialogFragment {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!client.isNetworkAvailable()) {
+                    ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.NETWORK);
+                    return;
+                }
                 if (replyToTweet != null) {
                     client.tweet(etTweet.getText().toString(), jsonHandle());
                 } else {
@@ -180,8 +185,7 @@ public class ComposeTweetDialog extends DialogFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-                // Handle error
+                ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
             }
         };
     }

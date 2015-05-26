@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.codepath.apps.restclienttemplate.ErrorHelper;
 import com.codepath.apps.restclienttemplate.adapters.TweetsArrayAdapter;
 import com.codepath.apps.restclienttemplate.fragments.ComposeTweetDialog;
 import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
@@ -117,8 +118,22 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public void showComposeDialog(Tweet tweet) {
-        if (currentUser != null) {
+    public void showComposeDialog(final Tweet tweet) {
+
+        if (currentUser == null) {
+
+            client.getCurrentUser(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    currentUser = User.fromJSON(response);
+                    showComposeDialog(tweet);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    ErrorHelper.showErrorAlert(TimelineActivity.this, ErrorHelper.ErrorType.GENERIC);
+                }
+            });
+        } else {
             FragmentManager fm = getSupportFragmentManager();
             ComposeTweetDialog composeDialog;
             if (tweet != null) {
@@ -127,7 +142,6 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 composeDialog = ComposeTweetDialog.newInstance(currentUser);
             }
             composeDialog.show(fm, "fragment_compose_tweet");
-
         }
     }
 
@@ -141,6 +155,12 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
     // Networking
     private void fetchTweets(final long maxID) {
 
+        if (!client.isNetworkAvailable()) {
+            ErrorHelper.showErrorAlert(this, ErrorHelper.ErrorType.NETWORK);
+            swipeContainer.setRefreshing(false);
+            return;
+        }
+
         if (currentUser == null) {
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
@@ -150,7 +170,8 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    // Display Error to User
+                    ErrorHelper.showErrorAlert(TimelineActivity.this, ErrorHelper.ErrorType.GENERIC);
+                    swipeContainer.setRefreshing(false);
                 }
             });
         } else {
@@ -172,7 +193,7 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d("DEBUG", throwable.toString());
+                    ErrorHelper.showErrorAlert(TimelineActivity.this, ErrorHelper.ErrorType.GENERIC);
                     swipeContainer.setRefreshing(false);
                 }
 

@@ -31,9 +31,10 @@
     <string name="profile_description">Profile icon</string>
     <string name="twitter_media_description">Twiter Media</string>
 
+    <string name="network_failure_warning">You must connect to the network to use this application.</string>
+    <string name="general_failure_warning">Something went wrong.. Please try again.</string>
 
-
-
+    <string name="casual_dialog_accept">Ok</string>
 
 
 </resources>
