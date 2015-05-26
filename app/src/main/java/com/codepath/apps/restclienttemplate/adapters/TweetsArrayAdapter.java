@@ -103,23 +103,24 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 //            viewHolder.body.setTextSize(16);
 //            viewHolder.body.setLineSpacing(4, 1);
 
-            viewHolder.reply.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final int positon = listView.getPositionForView(v);
-                    if (position != ListView.INVALID_POSITION) {
-                        Tweet tweet = getItem(position);
-                        // Launch Reply Screen
-                        TimelineActivity activity = (TimelineActivity) getContext();
-                        activity.showComposeDialog(tweet);
-                    }
-                }
-            });
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.reply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int positon = listView.getPositionForView(v);
+                if (position != ListView.INVALID_POSITION) {
+                    Tweet tweet = getItem(position);
+                    // Launch Reply Screen
+                    TimelineActivity activity = (TimelineActivity) getContext();
+                    activity.showComposeDialog(tweet);
+                }
+            }
+        });
 
         viewHolder.username.setText(TextUtils.concat(formatter.usernameSpanned(tweet.getUser().getName()), " ", formatter.screenameSpanned(tweet.getUser().getScreenName())));
         viewHolder.body.setText(tweet.getBody());
