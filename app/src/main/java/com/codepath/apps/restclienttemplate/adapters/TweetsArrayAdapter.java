@@ -1,22 +1,19 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.codepath.apps.restclienttemplate.HTMLTextDisplay;
-import com.codepath.apps.restclienttemplate.ProfileImageHelper;
+import com.codepath.apps.restclienttemplate.views.HTMLTextDisplay;
+import com.codepath.apps.restclienttemplate.views.ProfileImageHelper;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.timeunits.Day;
 import com.codepath.apps.restclienttemplate.timeunits.Hour;
@@ -30,11 +27,9 @@ import com.squareup.picasso.Picasso;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by teddywyly on 5/18/15.
@@ -121,7 +116,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 }
             });
 
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -166,18 +160,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     private String getRelativeTimeAgo(long millis) {
         return prettyTime.format(new Date(millis));
-//        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-//        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-//        sf.setLenient(true);
-//        String relativeDate = "";
-//        try {
-//            long dateMillis = sf.parse(rawJsonDate).getTime();
-//            return prettyTime.format(new Date(dateMillis));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return "unknown";
     }
 
 

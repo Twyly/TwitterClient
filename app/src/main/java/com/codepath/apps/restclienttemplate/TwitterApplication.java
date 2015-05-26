@@ -2,6 +2,8 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 
+import com.codepath.apps.restclienttemplate.networking.TwitterClient;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /*

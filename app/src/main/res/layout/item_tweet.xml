@@ -6,10 +6,11 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/item_tweet_retweet_size"
+        android:layout_height="@dimen/item_tweet_retweet_size"
         android:id="@+id/ivRetweet"
         android:src="@drawable/ic_retweet"
+        android:contentDescription="@string/retweet_description"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/ivProfileImage"
         android:layout_alignEnd="@+id/ivProfileImage"/>
@@ -17,11 +18,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:textColor="@color/theme_text_detail"
         android:id="@+id/tvRetweet"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/activity_base_margin"
+        android:paddingRight="@dimen/activity_base_margin"
         android:layout_toRightOf="@+id/ivRetweet"
         android:layout_toEndOf="@id/ivRetweet"
         android:layout_alignParentRight="true"
@@ -33,6 +34,7 @@
         android:layout_height="@dimen/profile_image_view_length"
         android:id="@+id/ivProfileImage"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/profile_description"
         android:layout_below="@+id/tvRetweet"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -40,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:id="@+id/tvUsername"
         android:singleLine="true"
         android:paddingLeft="10dp"
@@ -56,10 +58,10 @@
         android:maxLines="1"
         android:ellipsize="end" />
 
-    <com.codepath.apps.restclienttemplate.LinkifiedTextView
+    <com.codepath.apps.restclienttemplate.views.LinkifiedTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:id="@+id/tvBody"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
@@ -76,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ivPreview"
+        android:contentDescription="@string/twitter_media_description"
         android:layout_below="@+id/tvBody"
         android:layout_alignLeft="@+id/tvBody"
         android:layout_marginTop="10dp"
@@ -88,7 +91,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:id="@+id/tvTimestamp"
         android:textColor="@color/theme_text_detail"
         android:layout_alignTop="@+id/tvUsername"
@@ -108,15 +111,18 @@
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnReply"
-            android:drawableLeft="@drawable/ic_reply"/>
+            android:drawableLeft="@drawable/ic_reply"
+            android:drawableStart="@drawable/ic_reply"/>
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnRetweet"
-            android:drawableLeft="@drawable/ic_retweet"/>
+            android:drawableLeft="@drawable/ic_retweet"
+            android:drawableStart="@drawable/ic_retweet"/>
         <Button
             style="@style/TweetItemActionButton"
             android:id="@+id/btnFavorite"
-            android:drawableLeft="@drawable/ic_favorite"/>
+            android:drawableLeft="@drawable/ic_favorite"
+            android:drawableStart="@drawable/ic_favorite"/>
     </LinearLayout>
 
 </RelativeLayout>

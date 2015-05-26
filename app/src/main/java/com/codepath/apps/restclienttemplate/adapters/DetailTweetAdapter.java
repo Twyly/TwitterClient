@@ -1,7 +1,6 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.codepath.apps.restclienttemplate.HTMLTextDisplay;
-import com.codepath.apps.restclienttemplate.ProfileImageHelper;
+import com.codepath.apps.restclienttemplate.views.HTMLTextDisplay;
+import com.codepath.apps.restclienttemplate.views.ProfileImageHelper;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.activities.DetailTweetActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -50,6 +49,7 @@ public class DetailTweetAdapter extends BaseAdapter {
         return context;
     }
 
+    // No ViewHolder pattern is necessary for the Base Rows, as only was cell exists for each row
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         switch (getItemViewType(position)) {
@@ -69,7 +69,6 @@ public class DetailTweetAdapter extends BaseAdapter {
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet_action, parent, false);
                     configureNewActionRow(convertView);
-
                 }
                 return convertView;
             default:
@@ -79,13 +78,13 @@ public class DetailTweetAdapter extends BaseAdapter {
     }
 
     private void configureDetailRow(View convertView) {
+
         ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
         ImageView ivMedia = (ImageView) convertView.findViewById(R.id.ivMedia);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
         TextView tvScreename = (TextView) convertView.findViewById(R.id.tvScreenname);
         TextView tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
         TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
-
         ImageView ivRetweetIcon = (ImageView) convertView.findViewById(R.id.ivRetweetIcon);
         TextView tvRetweet = (TextView) convertView.findViewById(R.id.tvRetweet);
 
@@ -99,12 +98,6 @@ public class DetailTweetAdapter extends BaseAdapter {
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivImage);
 
         if (tweet.getMediaURL() != null) {
-            float ratio = (float)tweet.getMediaWidth()/tweet.getMediaHeight();
-            float width = ivMedia.getMeasuredWidth();
-            int height = (int)(width/ratio);
-            Log.d("RATIO", ratio + "");
-            Log.d("Width", width + "");
-            Log.d("HEIGHT", width/ratio + "");
             Picasso.with(getContext()).load(tweet.getMediaURL()).transform(ProfileImageHelper.roundTransformation()).placeholder(R.color.theme_text_detail).into(ivMedia);
         }
 
@@ -139,7 +132,6 @@ public class DetailTweetAdapter extends BaseAdapter {
                 detailActivity.showReplyComposeDialog(tweet);
             }
         });
-
     }
 
     @Override
@@ -164,24 +156,16 @@ public class DetailTweetAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return null;
-        //return position >= BASE_ROWS ? tweets.get(position-BASE_ROWS) : null;
     }
 
     @Override
     public int getCount() {
         return BASE_ROWS;
-        //return BASE_ROWS;
-//        if (tweets != null) {
-//            return BASE_ROWS + tweets.size();
-//        } else {
-//            return BASE_ROWS;
-//        }
     }
 
     @Override
     public int getViewTypeCount() {
         return BASE_ROWS+1;
     }
-
 
 }

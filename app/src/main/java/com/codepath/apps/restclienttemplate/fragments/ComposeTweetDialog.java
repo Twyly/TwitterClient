@@ -15,10 +15,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.restclienttemplate.ProfileImageHelper;
+import com.codepath.apps.restclienttemplate.views.ProfileImageHelper;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.networking.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -38,6 +38,7 @@ public class ComposeTweetDialog extends DialogFragment {
     private ImageButton ibCancel;
     private int textCount;
     private TwitterClient client;
+    private Tweet replyToTweet;
 
     public interface ComposteTweetDialogListener {
         void onFinishComposeTweet(Tweet tweet);
@@ -85,9 +86,9 @@ public class ComposeTweetDialog extends DialogFragment {
         TextView tvScreenname = (TextView) view.findViewById(R.id.tvScreenname);
         ImageView ivProfile = (ImageView) view.findViewById(R.id.ivProfile);
 
-        Tweet tweet = getArguments().getParcelable("tweet");
-        if (tweet != null) {
-            etTweet.setText("@" + tweet.getUser().getScreenName() + " ");
+        replyToTweet = getArguments().getParcelable("tweet");
+        if (replyToTweet != null) {
+            etTweet.setText("@" + replyToTweet.getUser().getScreenName() + " ");
             etTweet.setSelection(etTweet.getText().length());
         }
 
@@ -153,22 +154,11 @@ public class ComposeTweetDialog extends DialogFragment {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.tweet(etTweet.getText().toString(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Tweet newTweet = Tweet.fromJSON(response);
-                        ComposteTweetDialogListener listener = (ComposteTweetDialogListener) getActivity();
-                        listener.onFinishComposeTweet(newTweet);
-                        dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        Log.d("DEBUG", errorResponse.toString());
-                        // Handle error
-                    }
-
-                });
+                if (replyToTweet != null) {
+                    client.tweet(etTweet.getText().toString(), jsonHandle());
+                } else {
+                    client.tweet(etTweet.getText().toString(), jsonHandle());
+                }
             }
         });
         ibCancel.setOnClickListener(new View.OnClickListener() {
@@ -178,4 +168,24 @@ public class ComposeTweetDialog extends DialogFragment {
             }
         });
     }
+
+    private JsonHttpResponseHandler jsonHandle() {
+        return new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = Tweet.fromJSON(response);
+                ComposteTweetDialogListener listener = (ComposteTweetDialogListener) getActivity();
+                listener.onFinishComposeTweet(newTweet);
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+                // Handle error
+            }
+        };
+    }
+
+
+
 }

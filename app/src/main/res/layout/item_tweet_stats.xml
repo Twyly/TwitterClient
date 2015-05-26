@@ -19,6 +19,7 @@
         android:background="@android:color/transparent"
         android:textAllCaps="false"
         android:layout_marginLeft="@dimen/activity_base_margin"
+        android:layout_marginStart="@dimen/activity_base_margin"
         android:id="@+id/btnFavorite" />
 
 </LinearLayout>

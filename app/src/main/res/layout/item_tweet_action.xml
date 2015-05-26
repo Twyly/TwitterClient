@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_reply"
+        android:contentDescription="@string/reply_description"
         style="@style/TweetActionImageButton"
         android:id="@+id/ibReply" />
 
@@ -17,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_retweet"
+        android:contentDescription="@string/retweet_description"
         style="@style/TweetActionImageButton"
         android:id="@+id/ibRetweet" />
 
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favorite"
+        android:contentDescription="@string/favorite_description"
         style="@style/TweetActionImageButton"
         android:id="@+id/ibFavorite" />
 
@@ -31,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_share"
+        android:contentDescription="@string/share_description"
         style="@style/TweetActionImageButton"
         android:id="@+id/ibShare" />
 </LinearLayout>

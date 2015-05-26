@@ -9,12 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/crowd"
+        android:id="@+id/ivCrowd"
+        android:contentDescription="@string/crowd_description"
         android:scaleType="centerCrop"
         />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ivDimmer"
+        android:contentDescription="@string/dimmer_description"
         android:src="@color/theme_dimmer"/>
 
     <LinearLayout
@@ -22,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="@dimen/login_layout_padding"
         android:background="@android:color/white">
 
         <Button
@@ -32,12 +36,11 @@
             android:textColor="@android:color/white"
             android:text="@string/login_label"
             android:id="@+id/btnLogin"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textSize="20sp"
+            android:paddingLeft="@dimen/activity_base_margin"
+            android:paddingRight="@dimen/activity_base_margin"
+            android:textSize="@dimen/login_button_text_size"
             android:textAllCaps="false"
             android:layout_gravity="center" />
-
     </LinearLayout>
 
 
@@ -45,24 +48,24 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:paddingTop="@dimen/login_layout_text_padding"
+        android:paddingLeft="@dimen/login_layout_text_padding"
+        android:paddingStart="@dimen/login_layout_text_padding"
+        android:paddingEnd="@dimen/login_layout_text_padding"
         android:layout_gravity="start|top"
         android:id="@+id/llLabels">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:textSize="@dimen/login_major_label_text_size"
             android:text="@string/tutorial_hello"
             android:id="@+id/tvHello" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/login_minor_label_text_size"
             android:text="@string/tutorial_welcome"
             android:id="@+id/tvWelcome" />
     </LinearLayout>

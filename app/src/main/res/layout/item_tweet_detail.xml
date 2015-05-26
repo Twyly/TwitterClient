@@ -7,9 +7,10 @@
     android:padding="@dimen/activity_base_margin">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/item_tweet_retweet_size"
+        android:layout_height="@dimen/item_tweet_retweet_size"
         android:id="@+id/ivRetweetIcon"
+        android:contentDescription="@string/retweet_description"
         android:src="@drawable/ic_retweet"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/ivImage"
@@ -19,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvRetweet"
-        android:text="Retweet Here"
+        android:text="@string/hello_world"
         android:textColor="@color/theme_text_detail"
         android:layout_alignStart="@id/tvUsername"
         android:layout_alignLeft="@id/tvUsername"
@@ -30,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivImage"
+        android:contentDescription="@string/profile_description"
         android:layout_below="@id/ivRetweetIcon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -41,7 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_base_margin"
-        android:text="New Text"
+        android:layout_marginStart="@dimen/activity_base_margin"
+        android:text="@string/hello_world"
         android:id="@+id/tvUsername"
         android:layout_alignTop="@id/ivImage"
         android:lines="1"
@@ -53,7 +56,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:lines="1"
         android:id="@+id/tvScreenname"
         android:layout_alignLeft="@id/tvUsername"
@@ -67,7 +70,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/hello_world"
         android:textColor="@color/theme_text_primary"
         android:id="@+id/tvTweet"
         android:autoLink="all"
@@ -85,6 +88,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/ivMedia"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/twitter_media_description"
         android:scaleType="fitXY"
         android:layout_alignLeft="@id/tvTweet"
         android:layout_alignStart="@id/tvTweet"
@@ -104,6 +108,5 @@
         android:layout_below="@+id/ivMedia"
         android:layout_alignRight="@+id/tvTweet"
         android:layout_alignEnd="@+id/tvTweet" />
-
 
 </RelativeLayout>

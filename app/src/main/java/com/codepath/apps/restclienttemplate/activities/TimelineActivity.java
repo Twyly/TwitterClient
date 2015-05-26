@@ -20,7 +20,7 @@ import com.codepath.apps.restclienttemplate.fragments.ComposeTweetDialog;
 import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.networking.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -74,7 +74,6 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
             }
         });
 
-
         lvTweets.setOnScrollListener(new EndlessTweetScrollListener(10) {
             @Override
             public void onLoadMore(long maxID, int totalItemsCount) {
@@ -95,8 +94,6 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
                 android.R.color.holo_red_light);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -106,17 +103,12 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.miCompose) {
-            Log.d("DEBUG", "SHOW Compose");
             showComposeDialog(null);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -137,7 +129,6 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
             composeDialog.show(fm, "fragment_compose_tweet");
 
         }
-        // Possibly ask to authenticate
     }
 
     private void showDetialActivity(Tweet tweet) {
@@ -154,11 +145,9 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("DEBUG", response.toString());
                     currentUser = User.fromJSON(response);
                     fetchTweets(maxID);
                 }
-
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     // Display Error to User

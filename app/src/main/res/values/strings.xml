@@ -6,6 +6,7 @@
     <string name="title_activity_timeline">Home</string>
 
     <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_compose">Compose Tweet</string>
     <string name="title_activity_detail_tweet">Tweet</string>
@@ -15,5 +16,24 @@
     <string name="max_tweet_length">140</string>
     <string name="tutorial_hello">Hello.</string>
     <string name="tutorial_welcome">Welcome to Twitter.</string>
+
+
+
+    <string name="crowd_description">Picture of a crowd</string>
+    <string name="dimmer_description">Dim picture behind</string>
+    <string name="cancel_description">Cancel icon</string>
+    <string name="retweet_description">Retweet icon</string>
+    <string name="reply_description">Reply icon</string>
+    <string name="favorite_description">Favorite icon</string>
+    <string name="share_description">Share icon</string>
+
+
+    <string name="profile_description">Profile icon</string>
+    <string name="twitter_media_description">Twiter Media</string>
+
+
+
+
+
 
 </resources>

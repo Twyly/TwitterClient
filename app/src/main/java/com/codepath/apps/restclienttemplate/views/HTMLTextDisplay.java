@@ -1,9 +1,11 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.views;
 
 import android.content.res.Resources;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+
+import com.codepath.apps.restclienttemplate.R;
 
 /**
  * Created by teddywyly on 5/21/15.
