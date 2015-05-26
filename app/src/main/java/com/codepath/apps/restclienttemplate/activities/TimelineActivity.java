@@ -60,6 +60,8 @@ public class TimelineActivity extends ActionBarActivity implements ComposeTweetD
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_bird);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setElevation(0);
+
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         lvTweets = (ListView) findViewById(R.id.lvTweets);

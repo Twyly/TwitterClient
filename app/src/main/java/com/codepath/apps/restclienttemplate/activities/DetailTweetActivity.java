@@ -38,6 +38,7 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_bird);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setElevation(0);
 
         mTweet = getIntent().getParcelableExtra("tweet");
         currentUser = getIntent().getParcelableExtra("user");
