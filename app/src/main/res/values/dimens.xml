@@ -6,6 +6,8 @@
     <dimen name="profile_image_view_length">56dp</dimen>
     <dimen name="action_button_text_size">12sp</dimen>
     <dimen name="activity_base_margin">10dp</dimen>
+    <dimen name="text_label_vertical_padding">5dp</dimen>
+
     <dimen name="preview_image_height">180dp</dimen>
 
     <dimen name="login_layout_padding">16dp</dimen>

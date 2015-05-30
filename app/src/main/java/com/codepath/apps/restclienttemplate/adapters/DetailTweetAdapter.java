@@ -119,8 +119,8 @@ public class DetailTweetAdapter extends BaseAdapter {
     private void configureStatsRow(View convertView) {
         Button btnRetweet = (Button) convertView.findViewById(R.id.btnRetweet);
         Button btnFavorite = (Button) convertView.findViewById(R.id.btnFavorite);
-        btnRetweet.setText(formatter.statSpanned("RETWEET", tweet.getRetweetCount()));
-        btnFavorite.setText(formatter.statSpanned("FAVORITE", tweet.getFavoriteCount()));
+        btnRetweet.setText(formatter.statSpanned(getContext().getString(R.string.retweet_label), tweet.getRetweetCount(), true));
+        btnFavorite.setText(formatter.statSpanned(getContext().getString(R.string.favorite_label), tweet.getFavoriteCount(), true));
     }
 
     private void configureNewActionRow(View convertView) {

@@ -9,14 +9,19 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_compose">Compose Tweet</string>
+    <string name="action_profile">Profile</string>
     <string name="title_activity_detail_tweet">Tweet</string>
     <string name="cancel_tweet_label">Cancel</string>
     <string name="send_tweet_label">Tweet</string>
     <string name="compose_hint">What\'s happening?</string>
+    <string name="following_label">Following</string>
+    <string name="followers_label">Follower</string>
+    <string name="retweet_label">Retweet</string>
+    <string name="favorite_label">Favorite</string>
+
     <string name="max_tweet_length">140</string>
     <string name="tutorial_hello">Hello.</string>
     <string name="tutorial_welcome">Welcome to Twitter.</string>
-
 
 
     <string name="crowd_description">Picture of a crowd</string>
@@ -26,6 +31,7 @@
     <string name="reply_description">Reply icon</string>
     <string name="favorite_description">Favorite icon</string>
     <string name="share_description">Share icon</string>
+    <string name="profile_background_description">Profile Background</string>
 
 
     <string name="profile_description">Profile icon</string>
@@ -35,6 +41,7 @@
     <string name="general_failure_warning">Something went wrong.. Please try again.</string>
 
     <string name="casual_dialog_accept">Ok</string>
+    <string name="title_activity_profile">Profile</string>
 
 
 </resources>

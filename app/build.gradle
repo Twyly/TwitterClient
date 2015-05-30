@@ -38,4 +38,6 @@ dependencies {
     compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
     // Custom Fonts
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
+    // View Pager
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }

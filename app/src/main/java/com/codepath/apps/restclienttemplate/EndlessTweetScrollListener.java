@@ -13,7 +13,7 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 // Should Change this to act off of Max_ids instead of pages
 
-public abstract class EndlessTweetScrollListener implements AbsListView.OnScrollListener {
+public abstract class EndlessTweetScrollListener implements AbsListView.OnScrollListener { //extends ListScrollDistanceCalculator {//
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private int visibleThreshold = 5;
@@ -44,6 +44,7 @@ public abstract class EndlessTweetScrollListener implements AbsListView.OnScroll
     @Override
     public void onScroll(AbsListView view,int firstVisibleItem,int visibleItemCount,int totalItemCount)
     {
+        //super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
 
@@ -78,9 +79,11 @@ public abstract class EndlessTweetScrollListener implements AbsListView.OnScroll
 
     // Defines the process for actually loading more data based on page
     public abstract void onLoadMore(long maxID, int totalItemsCount);
+//    public abstract void onScroll(AbsListView view,int firstVisibleItem,int visibleItemCount,int totalItemCount);
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        //super.onScrollStateChanged(view, scrollState);
         // Don't take any action on changed
     }
 }

@@ -143,12 +143,12 @@ public class ComposeTweetDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            ComposteTweetDialogListener listener = (ComposteTweetDialogListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ComposeTweetDialogListener");
-        }
+//        try {
+//            ComposteTweetDialogListener listener = (ComposteTweetDialogListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement ComposeTweetDialogListener");
+//        }
     }
 
     private void setupButtonListeners() {

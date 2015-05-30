@@ -36,6 +36,10 @@ import java.util.List;
  */
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
+    public interface TweetsArrayAdapterListener {
+        public void replyToTweetClicked(Tweet tweet);
+    }
+
     private class ViewHolder {
         ImageView profile;
         ImageView preview;
@@ -51,13 +55,13 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     }
 
     private HTMLTextDisplay formatter;
-    private ListView listView;
     private PrettyTime prettyTime;
+    private TweetsArrayAdapterListener listener;
 
-    public TweetsArrayAdapter(Context context, List<Tweet> objects, ListView listView) {
+    public TweetsArrayAdapter(Context context, List<Tweet> objects, TweetsArrayAdapterListener listener) {
         super(context, 0, objects);
-        this.listView = listView;
         this.formatter = new HTMLTextDisplay(context.getResources());
+        this.listener = listener;
         prettyTime = twitterTime();
     }
 
@@ -81,7 +85,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -98,27 +102,18 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.retweetIcon = (ImageView) convertView.findViewById(R.id.ivRetweet);
             viewHolder.retweetText = (TextView) convertView.findViewById(R.id.tvRetweet);
 
-//            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Montserrat-Light.otf");
-//            viewHolder.body.setTypeface(font);
-//            viewHolder.body.setTextSize(16);
-//            viewHolder.body.setLineSpacing(4, 1);
-
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        viewHolder.reply.setTag(tweet);
+
         viewHolder.reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int positon = listView.getPositionForView(v);
-                if (position != ListView.INVALID_POSITION) {
-                    Tweet tweet = getItem(position);
-                    // Launch Reply Screen
-                    TimelineActivity activity = (TimelineActivity) getContext();
-                    activity.showComposeDialog(tweet);
-                }
+                // Launch Reply Screen
+                listener.replyToTweetClicked(tweet);
             }
         });
 
@@ -157,6 +152,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         params.height = forImage ? (int) getContext().getResources().getDimension(R.dimen.preview_image_height) : 0;
         imageView.setLayoutParams(params);
     }
+
 
 
     private String getRelativeTimeAgo(long millis) {

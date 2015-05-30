@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:contentDescription="@string/profile_background_description"
+        android:id="@+id/ivProfileBackground"
+        android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_base_margin"
+        android:paddingRight="@dimen/activity_base_margin">
+
+        <ImageView
+            android:layout_width="@dimen/profile_image_view_length"
+            android:layout_height="@dimen/profile_image_view_length"
+            android:id="@+id/ivProfile"
+            android:contentDescription="@string/profile_description"
+            android:layout_marginTop="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvUsername"
+            android:text="@string/hello_world"
+            android:layout_below="@id/ivProfile"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/black"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world"
+            android:id="@+id/tvScreenname"
+            android:paddingTop="@dimen/text_label_vertical_padding"
+            android:paddingBottom="@dimen/text_label_vertical_padding"
+            android:layout_below="@+id/tvUsername"
+            android:layout_alignLeft="@id/tvUsername"
+            android:layout_alignStart="@id/tvUsername"
+            android:textColor="@android:color/black"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world"
+            android:id="@+id/tvTagline"
+            android:layout_below="@+id/tvScreenname"
+            android:layout_alignLeft="@id/tvUsername"
+            android:layout_alignStart="@id/tvUsername"
+            android:textColor="@android:color/black"
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"
+            android:paddingBottom="@dimen/text_label_vertical_padding"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tvTagline"
+            android:layout_alignLeft="@id/tvUsername"
+            android:layout_alignStart="@id/tvUsername"
+            android:id="@+id/linearLayout">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hello_world"
+                android:textColor="@android:color/black"
+                android:id="@+id/btnFollowing"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hello_world"
+                android:textColor="@android:color/black"
+                android:id="@+id/btnFollowers"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:layout_marginLeft="@dimen/activity_base_margin"
+                android:layout_marginStart="@dimen/activity_base_margin"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

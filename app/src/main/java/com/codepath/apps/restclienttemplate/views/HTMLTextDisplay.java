@@ -26,8 +26,8 @@ public class HTMLTextDisplay {
         return Html.fromHtml("<font color=" + resources.getColor(R.color.theme_text_detail) + ">" + "@" + username + "</font>");
     }
 
-    public Spanned statSpanned(String stat, int number) {
-        if (number != 1) {
+    public Spanned statSpanned(String stat, int number, boolean pluralize) {
+        if (number != 1 && pluralize) {
             stat = stat + "S";
         }
         Spanned numSpan = Html.fromHtml("<font color=" + resources.getColor(R.color.theme_text_primary) + ">" + number + "</font>");

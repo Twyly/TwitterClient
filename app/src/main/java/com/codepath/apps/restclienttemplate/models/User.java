@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -28,21 +29,40 @@ public class User extends Model implements Parcelable {
     private String screenName;
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+    @Column(name = "tagline")
+    private String tagline;
+    @Column(name = "followers_count")
+    private int followerCount;
+    @Column(name = "following_count")
+    private int followingCount;
+    @Column(name = "background_image_url")
+    private String backgroundImageUrl;
+
 
     public String getName() {
         return name;
     }
-
     public long getUid() {
         return uid;
     }
-
     public String getScreenName() {
         return screenName;
     }
-
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+    public String getTagline() {
+        return tagline;
+    }
+    public int getFollowerCount() {
+        return followerCount;
+    }
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
+    public String getBackgroundImageUrl() {
+        return backgroundImageUrl;
     }
 
     public static User findOrCreateFromJSON(JSONObject json) {
@@ -62,11 +82,16 @@ public class User extends Model implements Parcelable {
 
     public static User fromJSON(JSONObject json) {
         User user = new User();
+        Log.d("USER", json.toString());
         try {
             user.name = json.getString("name");
             user.uid = json.getLong("id");
             user.screenName = json.getString("screen_name");
             user.profileImageUrl = json.getString("profile_image_url");
+            user.tagline = json.getString("description");
+            user.followerCount = json.getInt("followers_count");
+            user.followingCount = json.getInt("friends_count");
+            user.backgroundImageUrl = json.getString("profile_background_image_url");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -92,6 +117,10 @@ public class User extends Model implements Parcelable {
         dest.writeLong(uid);
         dest.writeString(screenName);
         dest.writeString(profileImageUrl);
+        dest.writeString(tagline);
+        dest.writeInt(followerCount);
+        dest.writeInt(followingCount);
+        dest.writeString(backgroundImageUrl);
     }
 
     public static final Parcelable.Creator<User> CREATOR
@@ -112,6 +141,10 @@ public class User extends Model implements Parcelable {
         uid = in.readLong();
         screenName = in.readString();
         profileImageUrl = in.readString();
+        tagline = in.readString();
+        followerCount = in.readInt();
+        followingCount = in.readInt();
+        backgroundImageUrl = in.readString();
     }
 
     public User() {
