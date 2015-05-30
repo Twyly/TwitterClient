@@ -12,8 +12,8 @@
         android:src="@drawable/ic_retweet"
         android:contentDescription="@string/retweet_description"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/ivProfileImage"
-        android:layout_alignEnd="@+id/ivProfileImage"/>
+        android:layout_alignRight="@+id/ibProfileImage"
+        android:layout_alignEnd="@+id/ibProfileImage"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,10 +29,11 @@
         android:layout_alignParentEnd="true"
         />
 
-    <ImageView
+    <ImageButton
         android:layout_width="@dimen/profile_image_view_length"
         android:layout_height="@dimen/profile_image_view_length"
-        android:id="@+id/ivProfileImage"
+        android:background="@android:color/transparent"
+        android:id="@+id/ibProfileImage"
         android:scaleType="centerCrop"
         android:contentDescription="@string/profile_description"
         android:layout_below="@+id/tvRetweet"
@@ -50,9 +51,9 @@
         android:paddingTop="@dimen/text_label_vertical_padding"
         android:paddingBottom="@dimen/text_label_vertical_padding"
         android:textSize="16sp"
-        android:layout_alignTop="@id/ivProfileImage"
-        android:layout_toRightOf="@id/ivProfileImage"
-        android:layout_toEndOf="@id/ivProfileImage"
+        android:layout_alignTop="@id/ibProfileImage"
+        android:layout_toRightOf="@id/ibProfileImage"
+        android:layout_toEndOf="@id/ibProfileImage"
         android:layout_toLeftOf="@+id/tvTimestamp"
         android:layout_toStartOf="@+id/tvTimestamp"
         android:maxLines="1"

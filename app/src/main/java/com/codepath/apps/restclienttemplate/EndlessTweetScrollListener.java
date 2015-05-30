@@ -54,18 +54,25 @@ public abstract class EndlessTweetScrollListener implements AbsListView.OnScroll
             if (totalItemCount == 0) {
                 this.loading = true;
             } else {
-                Tweet lastTweet = (Tweet) view.getAdapter().getItem(totalItemCount-1);
-                currentMaxID = lastTweet.getUid();
+                Tweet lastTweet = (Tweet) view.getItemAtPosition(totalItemCount-1);
+                if (lastTweet != null) {
+                    currentMaxID = lastTweet.getUid();
+                }
             }
         }
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
         // number and total item count.
         if (loading && (totalItemCount > previousTotalItemCount)) {
+            Log.d("PREVIOUS COUNT", previousTotalItemCount + "");
+            Log.d("TOTAL COUNT", totalItemCount + "");
+
             loading = false;
             previousTotalItemCount = totalItemCount;
-            Tweet lastTweet = (Tweet) view.getAdapter().getItem(totalItemCount-1);
-            currentMaxID = lastTweet.getUid();
+            Tweet lastTweet = (Tweet) view.getItemAtPosition(totalItemCount-1);
+            if (lastTweet != null) {
+                currentMaxID = lastTweet.getUid();
+            }
         }
 
         // If it isn’t currently loading, we check to see if we have breached

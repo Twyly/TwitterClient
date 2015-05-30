@@ -64,28 +64,12 @@ public class UserTimelineFragment extends TweetsListFragment {
         fragmentProfile = new ProfileHeaderFragment();
         ft.replace(R.id.flContainer, fragmentProfile);
         ft.commit();
-        Log.d("DEBUG", fragmentProfile.toString());
         getLvTweets().addHeaderView(header);
 
         getLvTweets().setOnScrollListener(new EndlessTweetScrollListener(10) {
             @Override
             public void onLoadMore(long maxID, int totalItemsCount) {
                 fetchTweets(maxID);
-            }
-
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                super.onScrollStateChanged(view, scrollState);
-//                Log.d("OFFSET", view.getScrollY() + "");
-//
-//            }
-//
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-                // Resize ImageView
-                //Log.d("OFFSET", getTotalScrollDistance() + "");
-
             }
         });
 
@@ -136,6 +120,7 @@ public class UserTimelineFragment extends TweetsListFragment {
                     ArrayList<Tweet> newTweets = Tweet.saveFromJSONArray(json, tweetsCacheName());
 
                     if (!newTweets.isEmpty()) {
+                        Log.d("NEW TWEETS", newTweets.toString());
                         addAll(newTweets);
                     }
 //                    swipeContainer.setRefreshing(false);

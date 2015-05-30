@@ -22,6 +22,7 @@ import com.codepath.apps.restclienttemplate.ErrorHelper;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.activities.DetailTweetActivity;
+import com.codepath.apps.restclienttemplate.activities.ProfileActivity;
 import com.codepath.apps.restclienttemplate.activities.TimelineActivity;
 import com.codepath.apps.restclienttemplate.adapters.TweetsArrayAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -155,6 +156,13 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         startActivity(intent);
     }
 
+    private void showProfileActivity(User user) {
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.putExtra("screenname", user.getScreenName());
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
     public abstract String tweetsCacheName();
 
 
@@ -165,8 +173,11 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         tweets = new ArrayList<Tweet>();
         aTweets = new TweetsArrayAdapter(getActivity(), tweets, new TweetsArrayAdapter.TweetsArrayAdapterListener() {
             @Override
-            public void replyToTweetClicked(Tweet tweet) {
+            public void replyClicked(Tweet tweet) {
                 showComposeDialog(tweet);
+            }
+            public void profileClicked(User user) {
+                showProfileActivity(user);
             }
         });
     }

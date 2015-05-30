@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.views.HTMLTextDisplay;
 import com.codepath.apps.restclienttemplate.views.ProfileImageHelper;
 import com.codepath.apps.restclienttemplate.R;
@@ -37,11 +39,12 @@ import java.util.List;
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     public interface TweetsArrayAdapterListener {
-        public void replyToTweetClicked(Tweet tweet);
+        public void replyClicked(Tweet tweet);
+        public void profileClicked(User user);
     }
 
     private class ViewHolder {
-        ImageView profile;
+        ImageButton profile;
         ImageView preview;
         TextView username;
         TextView body;
@@ -90,7 +93,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
-            viewHolder.profile = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            viewHolder.profile = (ImageButton) convertView.findViewById(R.id.ibProfileImage);
             viewHolder.preview = (ImageView) convertView.findViewById(R.id.ivPreview);
             viewHolder.username = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.body = (TextView) convertView.findViewById(R.id.tvBody);
@@ -113,7 +116,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             @Override
             public void onClick(View v) {
                 // Launch Reply Screen
-                listener.replyToTweetClicked(tweet);
+                listener.replyClicked(tweet);
+            }
+        });
+
+        viewHolder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch Reply Screen
+                listener.profileClicked(tweet.getUser());
             }
         });
 
