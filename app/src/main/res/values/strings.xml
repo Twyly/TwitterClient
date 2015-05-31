@@ -41,7 +41,8 @@
     <string name="general_failure_warning">Something went wrong.. Please try again.</string>
 
     <string name="casual_dialog_accept">Ok</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_profile"></string>
+    <string name="title_activity_followers">FollowersActivity</string>
 
 
 </resources>

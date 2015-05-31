@@ -9,9 +9,11 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,6 +80,23 @@ public class User extends Model implements Parcelable {
             // Hanlde JSONException
         }
         return user;
+    }
+
+    public static ArrayList<User> fromJSONArray(JSONArray jsonArray) {
+        ArrayList<User> users = new ArrayList<User>();
+        for (int i=0; i<jsonArray.length(); i++) {
+            try {
+                JSONObject userJSON = jsonArray.getJSONObject(i);
+                User user = User.fromJSON(userJSON);
+                if (user != null) {
+                    users.add(user);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return users;
     }
 
     public static User fromJSON(JSONObject json) {

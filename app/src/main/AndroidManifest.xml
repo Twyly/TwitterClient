@@ -61,6 +61,7 @@
             android:name=".activities.DetailTweetActivity"
             android:label="@string/title_activity_detail_tweet"
             android:parentActivityName=".activities.TimelineActivity" >
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -68,7 +69,16 @@
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_profile"
+            android:theme="@style/ProfileBarTheme" >
+        </activity>
+        <activity
+            android:name=".activities.FollowersActivity"
+            android:label="@string/title_activity_followers"
+            android:parentActivityName=".activities.ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.restclienttemplate.activities.ProfileActivity" />
         </activity>
     </application>
 

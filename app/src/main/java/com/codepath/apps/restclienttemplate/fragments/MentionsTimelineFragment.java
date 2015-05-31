@@ -94,7 +94,7 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     Log.d("DEBUG", json.toString());
                     if (maxID <= 0) {
-                        deleteCachedTweetsAndUsers();
+                        //deleteCachedTweetsAndUsers();
                         clearAll();
                     }
                     ArrayList<Tweet> newTweets = Tweet.saveFromJSONArray(json, tweetsCacheName());
@@ -119,10 +119,10 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
         }
     }
 
-    private void deleteCachedTweetsAndUsers() {
-        new Delete().from(Tweet.class).execute();
-        new Delete().from(User.class).execute();
-    }
+//    private void deleteCachedTweetsAndUsers() {
+//        new Delete().from(Tweet.class).execute();
+//        new Delete().from(User.class).execute();
+//    }
 
     public void showComposeDialog(final Tweet tweet) {
 

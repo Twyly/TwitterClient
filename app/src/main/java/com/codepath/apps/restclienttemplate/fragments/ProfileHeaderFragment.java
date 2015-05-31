@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.networking.TwitterClient;
 import com.codepath.apps.restclienttemplate.views.HTMLTextDisplay;
@@ -22,6 +23,11 @@ import com.squareup.picasso.Picasso;
  */
 public class ProfileHeaderFragment extends Fragment {
 
+    public interface ProfileHeaderFragmentListener {
+        public void FollowingClicked(View v, User user);
+        public void FollowersClicked(View v, User user);
+    }
+
     private ImageView ivProfile;
     private ImageView ivProfileBackground;
     private TextView tvUsername;
@@ -29,12 +35,26 @@ public class ProfileHeaderFragment extends Fragment {
     private TextView tvTagline;
     private Button btnFollowing;
     private Button btnFollowers;
+    private User user;
 
     private HTMLTextDisplay formatter;
+    private ProfileHeaderFragmentListener listener;
 
 
     public void setUser(User user) {
+        this.user = user;
         updateViewsFromUser(user);
+    }
+
+    public void setListener(ProfileHeaderFragmentListener listener) {
+        this.listener = listener;
+    }
+
+    public void scaleProfileImage(float scalingFactor) {
+        if (ivProfile != null) {
+            ivProfile.setScaleX(scalingFactor);
+            ivProfile.setScaleY(scalingFactor);
+        }
     }
 
     private void updateViewsFromUser(User user) {
@@ -60,6 +80,24 @@ public class ProfileHeaderFragment extends Fragment {
         tvTagline = (TextView) view.findViewById(R.id.tvTagline);
         btnFollowing = (Button) view.findViewById(R.id.btnFollowing);
         btnFollowers = (Button) view.findViewById(R.id.btnFollowers);
+
+        btnFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.FollowingClicked(v, user);
+                }
+            }
+        });
+
+        btnFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.FollowersClicked(v, user);
+                }
+            }
+        });
 
         return view;
     }

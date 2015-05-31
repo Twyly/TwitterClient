@@ -105,20 +105,13 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                 showDetaillActivity(tweet);
             }
         });
-
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 //fetchTweets(0);
             }
         });
-
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
     }
 
     public void showComposeDialog(final Tweet tweet) {

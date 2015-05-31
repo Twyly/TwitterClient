@@ -102,7 +102,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     Log.d("DEBUG", json.toString());
                     if (maxID <= 0) {
-                        deleteCachedTweetsAndUsers();
+                        //deleteCachedTweetsAndUsers();
                         clearAll();
                     }
                     ArrayList<Tweet> newTweets = Tweet.saveFromJSONArray(json, tweetsCacheName());
@@ -129,16 +129,19 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void loadCachedTweets() {
+//        List<Tweet> cachedTweets = new Select().from(Tweet.class)
+//                .where("cache_name = ?", tweetsCacheName())
+//                .orderBy("timestamp DESC").limit(100).execute();
+//        addAll(cachedTweets);
         List<Tweet> cachedTweets = new Select().from(Tweet.class)
-                .where("cache_name = ?", tweetsCacheName())
                 .orderBy("timestamp DESC").limit(100).execute();
         addAll(cachedTweets);
     }
 
-    private void deleteCachedTweetsAndUsers() {
+//    private void deleteCachedTweetsAndUsers() {
 //        new Delete().from(Tweet.class).execute();
 //        new Delete().from(User.class).execute();
-    }
+//    }
 
     @Override
     public String tweetsCacheName() {
