@@ -100,7 +100,12 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         if (!loadCachedTweets(cacheName())) {
             setupTeardownForInitialLoad(true);
         }
-        fetchTweets(0);
+        User cachedUser = getCachedCurrentUser();
+        if (cachedUser != null) {
+            currentUser = cachedUser;
+        }
+
+        //fetchTweets(0);
         return v;
 
     }
@@ -141,6 +146,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             getClient().getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    cacheUserJSON(response);
                     currentUser = User.fromJSON(response);
                     showComposeDialog(tweet);
                 }
@@ -214,6 +220,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             getClient().getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    cacheUserJSON(response);
                     currentUser = User.fromJSON(response);
                     fetchTweets(maxID);
                 }
@@ -260,6 +267,32 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     public void onFinishComposeTweet(Tweet tweet) {
         tweet.save();
         aTweets.insert(tweet, 0);
+    }
+
+    //================================================================================
+    // Caching
+    //================================================================================
+
+    private User getCachedCurrentUser() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String jsonString = pref.getString("current_user", "");
+        if (jsonString.equals("")) {
+            return null;
+        }
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            return User.fromJSON(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void cacheUserJSON(JSONObject json) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("current_user", json.toString());
+        edit.commit();
     }
 
     protected boolean loadCachedTweets(String cacheName) {
