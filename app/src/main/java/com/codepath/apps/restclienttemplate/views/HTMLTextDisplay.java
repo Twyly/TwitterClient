@@ -35,5 +35,9 @@ public class HTMLTextDisplay {
         return (Spanned) TextUtils.concat(numSpan, " ", statSpan);
     }
 
+    public Spanned taglineSpanned(String tagline) {
+        return Html.fromHtml("<font color=" + resources.getColor(R.color.theme_text_detail) + ">" + tagline + "</font>");
+    }
+
 
 }

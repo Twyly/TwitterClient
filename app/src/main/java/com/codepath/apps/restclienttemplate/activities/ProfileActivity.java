@@ -1,20 +1,14 @@
 package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.codepath.apps.restclienttemplate.NetworkListener;
 import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.fragments.FollowersFragment;
 import com.codepath.apps.restclienttemplate.fragments.ProgressFragment;
 import com.codepath.apps.restclienttemplate.fragments.UserTimelineFragment;
 import com.codepath.apps.restclienttemplate.models.User;
@@ -28,22 +22,22 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        //String screenname = getIntent().getExtras().getString("screenname");
+        User user = getIntent().getExtras().getParcelable("user");
         if (savedInstanceState == null) {
-            fragmentUser = UserTimelineFragment.newInstance("theodorejamesw");
-            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.flContainer, fragmentUser, "User");
-            fragmentProgress = new ProgressFragment();
-            ft.hide(fragmentUser);
-            ft.add(R.id.flContainer, fragmentProgress, "Progress");
-            fragmentUser.setNetworkListener(new NetworkListener() {
-                @Override
-                public void finishedInitialLoad(boolean success) {
-                    Log.d("DEBUG", "Switch Fragments");
-                    ft.hide(fragmentProgress);
-                    ft.show(fragmentUser);
-                }
-            });
+            fragmentUser = UserTimelineFragment.newInstance(user.getScreenName());
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flContainer, fragmentUser);
+//            fragmentProgress = new ProgressFragment();
+//            ft.hide(fragmentUser);
+//            ft.add(R.id.flContainer, fragmentProgress, "Progress");
+//            fragmentUser.setNetworkListener(new NetworkListener() {
+//                @Override
+//                public void finishedInitialLoad(boolean success) {
+//                    Log.d("DEBUG", "Switch Fragments");
+//                    ft.hide(fragmentProgress);
+//                    ft.show(fragmentUser);
+//                }
+//            });
             ft.commit();
         }
 

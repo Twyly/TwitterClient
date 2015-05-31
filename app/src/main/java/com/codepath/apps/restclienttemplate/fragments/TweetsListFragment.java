@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.activeandroid.query.Select;
 import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
@@ -46,6 +47,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
+    private ProgressBar pbProgress;
 
     private TwitterClient client;
     public User currentUser;
@@ -72,14 +74,9 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         swipeContainer.setRefreshing(on);
     }
 
-//    public static TweetsListFragment newInstance(User user) {
-//        TweetsListFragment fragment = new TweetsListFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable("user", user);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
+    public ProgressBar getPbProgress() {
+        return pbProgress;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,6 +92,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
+        pbProgress = (ProgressBar) v.findViewById(R.id.pbProgress);
 
         lvTweets.setAdapter(aTweets);
 
@@ -112,6 +110,8 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
+
+        getPbProgress().setVisibility(View.INVISIBLE);
     }
 
     public void showComposeDialog(final Tweet tweet) {
@@ -152,17 +152,21 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private void showProfileActivity(User user) {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra("ParentClass", getActivity().getClass());
-        //Class<?> parentClass = (Class) getIntent().getSerializableExtra("ParentClass");
-
-        intent.putExtra("screenname", user.getScreenName());
         intent.putExtra("user", user);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //startActivityForResult(intent, 0);
         startActivity(intent);
     }
 
-    public abstract String tweetsCacheName();
+    public void setupTeardownForInitialLoad(boolean isStartup) {
+        if (isStartup) {
+            getLvTweets().setVisibility(View.INVISIBLE);
+            getPbProgress().setVisibility(View.VISIBLE);
+        } else {
+            getLvTweets().setVisibility(View.VISIBLE);
+            getPbProgress().setVisibility(View.INVISIBLE);
+        }
+    }
 
+    public abstract String tweetsCacheName();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

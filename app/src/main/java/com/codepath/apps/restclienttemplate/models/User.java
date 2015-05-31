@@ -101,7 +101,6 @@ public class User extends Model implements Parcelable {
 
     public static User fromJSON(JSONObject json) {
         User user = new User();
-        Log.d("USER", json.toString());
         try {
             user.name = json.getString("name");
             user.uid = json.getLong("id");

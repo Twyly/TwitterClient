@@ -6,12 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,14 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
 import com.codepath.apps.restclienttemplate.ErrorHelper;
-import com.codepath.apps.restclienttemplate.NetworkListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.activities.DetailTweetActivity;
 import com.codepath.apps.restclienttemplate.activities.FollowersActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
@@ -52,12 +45,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     private ProfileHeaderFragment fragmentProfile;
     private Drawable actionBarBackgroundDrawable;
 
-    private NetworkListener networkListener;
-
-    public void setNetworkListener(NetworkListener networkListener) {
-        this.networkListener = networkListener;
-    }
-
     public static UserTimelineFragment newInstance(String screenname) {
         UserTimelineFragment fragment = new UserTimelineFragment();
         Bundle args = new Bundle();
@@ -70,8 +57,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-        loadCachedTweets();
-        fetchTweets(0);
     }
 
     @Override
@@ -123,12 +108,17 @@ public class UserTimelineFragment extends TweetsListFragment {
             }
         });
 
+        loadCachedTweets();
+        setupTeardownForInitialLoad(true);
+        fetchTweets(0);
+
         return v;
     }
 
     private void updateActionBarFromImageView() {
 
     }
+
 
     private void showFollowersActivity(User user, boolean forFollowers) {
         Intent i = new Intent(getActivity(), FollowersActivity.class);
@@ -182,10 +172,9 @@ public class UserTimelineFragment extends TweetsListFragment {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     Log.d("DEBUG", json.toString());
+                    Log.d("MAX_ID", maxID + "");
                     if (maxID <= 0) {
-                        if (networkListener != null) {
-                            networkListener.finishedInitialLoad(true);
-                        }
+                        setupTeardownForInitialLoad(false);
                         //deleteCachedTweetsAndUsers();
                         clearAll();
                     }

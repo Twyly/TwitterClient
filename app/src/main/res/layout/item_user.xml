@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/activity_base_margin">
+
+    <ImageButton
+        android:layout_width="@dimen/profile_image_view_length"
+        android:layout_height="@dimen/profile_image_view_length"
+        android:background="@android:color/transparent"
+        android:id="@+id/ibProfileImage"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/profile_description"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world"
+        android:id="@+id/tvUsername"
+        android:singleLine="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="@dimen/text_label_vertical_padding"
+        android:paddingBottom="@dimen/text_label_vertical_padding"
+        android:textSize="16sp"
+        android:layout_alignTop="@id/ibProfileImage"
+        android:layout_toRightOf="@id/ibProfileImage"
+        android:layout_toEndOf="@id/ibProfileImage"
+        android:layout_toLeftOf="@+id/tvTimestamp"
+        android:layout_toStartOf="@+id/tvTimestamp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world"
+        android:id="@+id/tvScreenname"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:textSize="16sp"
+        android:autoLink="all"
+        android:textColor="@color/theme_text_primary"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:layout_alignStart="@id/tvUsername"
+        android:layout_alignRight="@id/tvTimestamp"
+        android:layout_alignEnd="@id/tvTimestamp" />
+
+    <com.codepath.apps.restclienttemplate.views.LinkifiedTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world"
+        android:id="@+id/tvTagline"
+        android:layout_alignLeft="@id/tvScreenname"
+        android:layout_alignStart="@id/tvScreenname"
+        android:layout_below="@id/tvScreenname"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

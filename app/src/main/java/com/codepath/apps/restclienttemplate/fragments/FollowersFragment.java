@@ -4,21 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
-import com.codepath.apps.restclienttemplate.EndlessTweetScrollListener;
 import com.codepath.apps.restclienttemplate.ErrorHelper;
-import com.codepath.apps.restclienttemplate.NetworkListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.adapters.TweetsArrayAdapter;
 import com.codepath.apps.restclienttemplate.adapters.UsersArrayAdapter;
-import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.networking.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -39,16 +35,13 @@ public class FollowersFragment extends Fragment {
     private ArrayList<User> users;
     private ListView lvUsers;
     private SwipeRefreshLayout swipeContainer;
+    private ProgressBar pbProgress;
 
     private TwitterClient client;
-    private NetworkListener listener;
 
     public User user;
     public boolean forFollowers;
 
-    public void setListener(NetworkListener listener) {
-        this.listener = listener;
-    }
 
     public static FollowersFragment newInstance(User user, boolean forFollowers) {
         FollowersFragment fragment = new FollowersFragment();
@@ -68,6 +61,7 @@ public class FollowersFragment extends Fragment {
 
         user = getArguments().getParcelable("user");
         forFollowers = getArguments().getBoolean("forFollowers");
+
     }
 
     @Override
@@ -76,6 +70,7 @@ public class FollowersFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvUsers = (ListView) v.findViewById(R.id.lvUsers);
         lvUsers.setAdapter(aUsers);
+        pbProgress = (ProgressBar) v.findViewById(R.id.pbProgress);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -86,6 +81,7 @@ public class FollowersFragment extends Fragment {
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
 
         fetchUsers(0);
+        setupTeardownForInitialLoad(true);
 
         return v;
     }
@@ -105,11 +101,10 @@ public class FollowersFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 if (cursor == 0) {
                     aUsers.clear();
-                    if (listener != null) {
-                        listener.finishedInitialLoad(true);
-                    }
+                    setupTeardownForInitialLoad(false);
                 }
 
+                Log.d("JSON RESPONSE", response.toString());
                 try {
                     JSONArray userJSON = response.getJSONArray("users");
                     long nextCursor = response.getLong("next_cursor");
@@ -131,5 +126,15 @@ public class FollowersFragment extends Fragment {
                 swipeContainer.setRefreshing(false);
             }
         };
+    }
+
+    public void setupTeardownForInitialLoad(boolean isStartup) {
+        if (isStartup) {
+            lvUsers.setVisibility(View.INVISIBLE);
+            pbProgress.setVisibility(View.VISIBLE);
+        } else {
+            lvUsers.setVisibility(View.VISIBLE);
+            pbProgress.setVisibility(View.INVISIBLE);
+        }
     }
 }

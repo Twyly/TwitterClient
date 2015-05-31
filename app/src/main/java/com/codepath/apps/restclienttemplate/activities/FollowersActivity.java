@@ -1,24 +1,19 @@
 package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.codepath.apps.restclienttemplate.NetworkListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.fragments.FollowersFragment;
-import com.codepath.apps.restclienttemplate.fragments.ProgressFragment;
 import com.codepath.apps.restclienttemplate.models.User;
 
 public class FollowersActivity extends AppCompatActivity {
 
     private FollowersFragment followersFragment;
-    private ProgressFragment progressFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +28,9 @@ public class FollowersActivity extends AppCompatActivity {
     private void startFragment(Intent i) {
         User user = getIntent().getParcelableExtra("user");
         boolean forFollowers = getIntent().getBooleanExtra("forFollowers", false);
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         followersFragment = FollowersFragment.newInstance(user, forFollowers);
-        ft.add(R.id.flContainer, followersFragment, "Followers");
-        progressFragment = new ProgressFragment();
-        ft.add(R.id.flContainer, progressFragment, "Progress");
-        followersFragment.setListener(new NetworkListener() {
-            @Override
-            public void finishedInitialLoad(boolean success) {
-                ft.hide(progressFragment);
-            }
-        });
+        ft.replace(R.id.flContainer, followersFragment, "Followers");
         ft.commit();
     }
 
@@ -53,6 +40,13 @@ public class FollowersActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.ic_bird);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setElevation(0);
+
+        boolean forFollowers = getIntent().getBooleanExtra("forFollowers", false);
+        if (forFollowers) {
+            getSupportActionBar().setTitle(R.string.followers_label);
+        } else {
+            getSupportActionBar().setTitle(R.string.following_label);
+        }
     }
 
     @Override

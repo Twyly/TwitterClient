@@ -61,6 +61,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 // Resize ImageView
             }
         });
+        setupTeardownForInitialLoad(true);
         return v;
 
     }
@@ -103,6 +104,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                     Log.d("DEBUG", json.toString());
                     if (maxID <= 0) {
                         //deleteCachedTweetsAndUsers();
+                        setupTeardownForInitialLoad(false);
                         clearAll();
                     }
                     ArrayList<Tweet> newTweets = Tweet.saveFromJSONArray(json, tweetsCacheName());

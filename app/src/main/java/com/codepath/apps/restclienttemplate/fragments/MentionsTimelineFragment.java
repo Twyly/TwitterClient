@@ -35,13 +35,11 @@ import java.util.ArrayList;
  */
 public class MentionsTimelineFragment extends HomeTimelineFragment {
 
-    private TwitterClient client;
     private User currentUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = TwitterApplication.getRestClient();
         //fetchTweets(0);
     }
 
@@ -55,6 +53,7 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
             }
 
         });
+        setupTeardownForInitialLoad(true);
         return v;
     }
 
@@ -66,7 +65,7 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
     // Networking
     private void fetchTweets(final long maxID) {
 
-        if (!client.isNetworkAvailable()) {
+        if (!getClient().isNetworkAvailable()) {
             ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.NETWORK);
 //            swipeContainer.setRefreshing(false);
             setRefreshing(false);
@@ -75,7 +74,7 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
         }
 
         if (currentUser == null) {
-            client.getCurrentUser(new JsonHttpResponseHandler() {
+            getClient().getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     currentUser = User.fromJSON(response);
@@ -89,11 +88,12 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
                 }
             });
         } else {
-            client.getMentionsTimeline(maxID, new JsonHttpResponseHandler() {
+            getClient().getMentionsTimeline(maxID, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     Log.d("DEBUG", json.toString());
                     if (maxID <= 0) {
+                        setupTeardownForInitialLoad(false);
                         //deleteCachedTweetsAndUsers();
                         clearAll();
                     }
@@ -123,33 +123,6 @@ public class MentionsTimelineFragment extends HomeTimelineFragment {
 //        new Delete().from(Tweet.class).execute();
 //        new Delete().from(User.class).execute();
 //    }
-
-    public void showComposeDialog(final Tweet tweet) {
-
-        if (currentUser == null) {
-
-            client.getCurrentUser(new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    currentUser = User.fromJSON(response);
-                    showComposeDialog(tweet);
-                }
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
-                }
-            });
-        } else {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            ComposeTweetDialog composeDialog;
-            if (tweet != null) {
-                composeDialog = ComposeTweetDialog.newInstance(currentUser, tweet);
-            } else {
-                composeDialog = ComposeTweetDialog.newInstance(currentUser);
-            }
-            composeDialog.show(fm, "fragment_compose_tweet");
-        }
-    }
 
 
     @Override
