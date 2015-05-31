@@ -158,8 +158,13 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
 
     private void showProfileActivity(User user) {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.putExtra("ParentClass", getActivity().getClass());
+        //Class<?> parentClass = (Class) getIntent().getSerializableExtra("ParentClass");
+
         intent.putExtra("screenname", user.getScreenName());
         intent.putExtra("user", user);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //startActivityForResult(intent, 0);
         startActivity(intent);
     }
 

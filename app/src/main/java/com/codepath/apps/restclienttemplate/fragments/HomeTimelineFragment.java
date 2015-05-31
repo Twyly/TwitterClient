@@ -136,8 +136,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void deleteCachedTweetsAndUsers() {
-        new Delete().from(Tweet.class).execute();
-        new Delete().from(User.class).execute();
+//        new Delete().from(Tweet.class).execute();
+//        new Delete().from(User.class).execute();
     }
 
     @Override

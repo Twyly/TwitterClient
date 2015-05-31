@@ -1,16 +1,21 @@
 package com.codepath.apps.restclienttemplate.activities;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.fragments.UserTimelineFragment;
 
-public class ProfileActivity extends ActionBarActivity {
-
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +29,28 @@ public class ProfileActivity extends ActionBarActivity {
             ft.commit();
         }
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setupActionBar();
+
+    }
+
+    private void setupActionBar() {
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_bird);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setElevation(0);
+    }
+
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        Class<?> parentClass = (Class) getIntent().getSerializableExtra("ParentClass");
+        Intent i = new Intent(this, parentClass);
+        return i;
+    }
+
+    @Override
+    public void onCreateSupportNavigateUpTaskStack(TaskStackBuilder builder) {
+        super.onCreateSupportNavigateUpTaskStack(builder);
     }
 
     @Override

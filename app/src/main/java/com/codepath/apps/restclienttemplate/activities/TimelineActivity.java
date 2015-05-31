@@ -88,6 +88,7 @@ public class TimelineActivity extends ActionBarActivity {
         if (id == R.id.miProfile) {
             // Show Profile
             Intent i = new Intent(this, ProfileActivity.class);
+            i.putExtra("ParentClass", this.getClass());
             startActivity(i);
             return true;
         }
