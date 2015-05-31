@@ -1,7 +1,9 @@
 package com.codepath.apps.restclienttemplate.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -33,6 +35,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -78,10 +81,20 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         return pbProgress;
     }
 
+    protected abstract String cacheName();
+    protected String username() {
+        return null;
+    }
+    protected abstract TwitterClient.TweetSearchType fetchType();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         setupViewsAndAdapter(v);
+        if (!loadCachedTweets(cacheName())) {
+            setupTeardownForInitialLoad(true);
+        }
+        fetchTweets(0);
         return v;
 
     }
@@ -89,13 +102,10 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private void setupViewsAndAdapter(View v) {
 
         // Add twitter bird
-
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
         pbProgress = (ProgressBar) v.findViewById(R.id.pbProgress);
-
         lvTweets.setAdapter(aTweets);
-
         lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,21 +120,24 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
-
+        getLvTweets().setOnScrollListener(new EndlessTweetScrollListener(10) {
+            @Override
+            public void onLoadMore(long maxID, int totalItemsCount) {
+                fetchTweets(maxID);
+            }
+        });
         getPbProgress().setVisibility(View.INVISIBLE);
     }
 
     public void showComposeDialog(final Tweet tweet) {
 
         if (getCurrentUser() == null) {
-
             getClient().getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     currentUser = User.fromJSON(response);
                     showComposeDialog(tweet);
                 }
-
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
@@ -166,8 +179,6 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         }
     }
 
-    public abstract String tweetsCacheName();
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,12 +195,97 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         });
     }
 
+    // Networking
+    private void fetchTweets(final long maxID) {
 
-    // ComposeTweetDialogListener
-    @Override
+        if (!getClient().isNetworkAvailable()) {
+            ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.NETWORK);
+            setRefreshing(false);
+            return;
+        }
+
+        if (getCurrentUser() == null) {
+            getClient().getCurrentUser(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    currentUser = User.fromJSON(response);
+                    fetchTweets(maxID);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("ERROR", errorResponse.toString());
+                    ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
+                    setRefreshing(false);
+                }
+            });
+        } else {
+            getClient().getTweets(fetchType(), maxID, username(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                    Log.d("DEBUG", json.toString());
+                    if (maxID <= 0) {
+                        cacheTweets(json, cacheName());
+                        setupTeardownForInitialLoad(false);
+                        clearAll();
+                    }
+                    ArrayList<Tweet> newTweets = Tweet.fromJSONArray(json);
+
+                    if (!newTweets.isEmpty()) {
+                        addAll(newTweets);
+                    }
+                    setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("ERROR", errorResponse.toString());
+                    ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
+                    setRefreshing(false);
+                }
+            });
+        }
+    }
+
+
     public void onFinishComposeTweet(Tweet tweet) {
         tweet.save();
         aTweets.insert(tweet, 0);
+    }
+
+    protected boolean loadCachedTweets(String cacheName) {
+        JSONArray cachedArray = getCachedJSONResponse(cacheName);
+        if (cachedArray == null) {
+            return false;
+        } else {
+            List<Tweet> cachedTweets = Tweet.fromJSONArray(cachedArray);
+            addAll(cachedTweets);
+            return true;
+        }
+    }
+
+    protected void cacheTweets(JSONArray jsonArray, String cacheName) {
+        cacheJSONResponse(jsonArray, cacheName);
+    }
+
+    private void cacheJSONResponse(JSONArray json, String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString(key, json.toString());
+        edit.commit();
+    }
+
+    private JSONArray getCachedJSONResponse(String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String jsonString = pref.getString(key, "");
+        if (jsonString.equals("")) {
+            return null;
+        }
+        try {
+            return new JSONArray(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

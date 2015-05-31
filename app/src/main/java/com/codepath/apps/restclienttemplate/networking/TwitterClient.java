@@ -47,6 +47,27 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// Method == Endpoint
 
+    public enum TweetSearchType {
+        PERSONAL_TIMELINE,
+        MENTIONS_TIMELINE,
+        USER_TIMELINE,
+    }
+
+
+    public void getTweets(TweetSearchType type, long maxID, String screenname, AsyncHttpResponseHandler handler) {
+        switch (type) {
+            case PERSONAL_TIMELINE:
+                getHomeTimeline(maxID, handler);
+                break;
+            case MENTIONS_TIMELINE:
+                getMentionsTimeline(maxID, handler);
+                break;
+            case USER_TIMELINE:
+                getUserTimeline(screenname, maxID, handler);
+                break;
+        }
+    }
+
     // Timeline
     public void getHomeTimeline(long maxID, AsyncHttpResponseHandler handler) {
         String apiURL = getApiUrl("statuses/home_timeline.json");

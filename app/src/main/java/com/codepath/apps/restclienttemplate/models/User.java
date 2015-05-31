@@ -40,7 +40,6 @@ public class User extends Model implements Parcelable {
     @Column(name = "background_image_url")
     private String backgroundImageUrl;
 
-
     public String getName() {
         return name;
     }

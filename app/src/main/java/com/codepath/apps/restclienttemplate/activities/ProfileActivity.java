@@ -9,14 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.fragments.ProgressFragment;
 import com.codepath.apps.restclienttemplate.fragments.UserTimelineFragment;
 import com.codepath.apps.restclienttemplate.models.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private UserTimelineFragment fragmentUser;
-    private ProgressFragment fragmentProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,20 +22,9 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         User user = getIntent().getExtras().getParcelable("user");
         if (savedInstanceState == null) {
-            fragmentUser = UserTimelineFragment.newInstance(user.getScreenName());
+            fragmentUser = UserTimelineFragment.newInstance(user);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, fragmentUser);
-//            fragmentProgress = new ProgressFragment();
-//            ft.hide(fragmentUser);
-//            ft.add(R.id.flContainer, fragmentProgress, "Progress");
-//            fragmentUser.setNetworkListener(new NetworkListener() {
-//                @Override
-//                public void finishedInitialLoad(boolean success) {
-//                    Log.d("DEBUG", "Switch Fragments");
-//                    ft.hide(fragmentProgress);
-//                    ft.show(fragmentUser);
-//                }
-//            });
             ft.commit();
         }
 

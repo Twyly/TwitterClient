@@ -52,8 +52,6 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "media_height")
     private int mediaHeight;
 
-    @Column(name = "cache_name")
-    private String cacheName;
 
     public String getBody() {
         return body;
@@ -99,12 +97,12 @@ public class Tweet extends Model implements Parcelable {
     }
 
 
-    public static ArrayList<Tweet> saveFromJSONArray(JSONArray jsonArray, String cacheName) {
+    public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>();
         for (int i=0; i<jsonArray.length(); i++) {
             try {
                 JSONObject tweetJSON = jsonArray.getJSONObject(i);
-                Tweet tweet = Tweet.createAndSaveFromJSON(tweetJSON, cacheName);
+                Tweet tweet = Tweet.fromJSON(tweetJSON);
                 if (tweet != null) {
                     tweets.add(tweet);
                 }
@@ -116,9 +114,25 @@ public class Tweet extends Model implements Parcelable {
         return tweets;
     }
 
-    public static Tweet createAndSaveFromJSON(JSONObject json, String cacheName) {
+    public static ArrayList<Tweet> saveFromJSONArray(JSONArray jsonArray, String cacheName) {
+        ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+        for (int i=0; i<jsonArray.length(); i++) {
+            try {
+                JSONObject tweetJSON = jsonArray.getJSONObject(i);
+                Tweet tweet = Tweet.createAndSaveFromJSON(tweetJSON);
+                if (tweet != null) {
+                    tweets.add(tweet);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return tweets;
+    }
+
+    public static Tweet createAndSaveFromJSON(JSONObject json) {
         Tweet tweet = Tweet.fromJSON(json);
-        tweet.cacheName = cacheName;
         if (tweet.uid != 0) {
             tweet.save();
         }
@@ -188,7 +202,6 @@ public class Tweet extends Model implements Parcelable {
         dest.writeInt(mediaWidth);
         dest.writeInt(mediaHeight);
         dest.writeParcelable(retweetedFrom, flags);
-        dest.writeString(cacheName);
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -208,7 +221,6 @@ public class Tweet extends Model implements Parcelable {
         body = in.readString();
         uid = in.readLong();
         user = in.readParcelable(User.class.getClassLoader());
-//        createdAt = in.readString();
         timestamp = in.readLong();
         retweetCount = in.readInt();
         favoriteCount = in.readInt();
@@ -216,7 +228,6 @@ public class Tweet extends Model implements Parcelable {
         mediaWidth = in.readInt();
         mediaHeight = in.readInt();
         retweetedFrom = in.readParcelable(User.class.getClassLoader());
-        cacheName = in.readString();
     }
 
 }
