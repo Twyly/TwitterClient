@@ -85,6 +85,12 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     protected String username() {
         return null;
     }
+    protected void onSuccessfulFetch() {
+
+    }
+    protected void onFailedFetch() {
+
+    }
     protected abstract TwitterClient.TweetSearchType fetchType();
 
     @Override
@@ -234,13 +240,17 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                         addAll(newTweets);
                     }
                     setRefreshing(false);
+                    onSuccessfulFetch();
+
                 }
+
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Log.d("ERROR", errorResponse.toString());
                     ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
                     setRefreshing(false);
+                    onFailedFetch();
                 }
             });
         }

@@ -54,10 +54,12 @@ public class UserTimelineFragment extends TweetsListFragment {
         return fragment;
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        user = getArguments().getParcelable("user");
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,8 +67,6 @@ public class UserTimelineFragment extends TweetsListFragment {
         final View header = inflater.inflate(R.layout.header_profile, container, false);
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         fragmentProfile = new ProfileHeaderFragment();
-
-        user = getArguments().getParcelable("user");
 
         fragmentProfile.setListener(new ProfileHeaderFragment.ProfileHeaderFragmentListener() {
             @Override
@@ -128,8 +128,9 @@ public class UserTimelineFragment extends TweetsListFragment {
     }
 
     @Override
-    protected String username() {
-        return user.getScreenName();
+    protected void onSuccessfulFetch() {
+        super.onSuccessfulFetch();
+        fragmentProfile.setUser(user);
     }
 
     private void showFollowersActivity(User user, boolean forFollowers) {
@@ -217,5 +218,10 @@ public class UserTimelineFragment extends TweetsListFragment {
     @Override
     protected TwitterClient.TweetSearchType fetchType() {
         return TwitterClient.TweetSearchType.USER_TIMELINE;
+    }
+
+    @Override
+    protected String username() {
+        return user.getScreenName();
     }
 }
