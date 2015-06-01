@@ -17,7 +17,7 @@ import com.codepath.apps.restclienttemplate.models.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class DetailTweetActivity extends ActionBarActivity implements ComposeTweetDialog.ComposteTweetDialogListener {
+public class DetailTweetActivity extends ActionBarActivity implements ComposeTweetDialog.ComposeTweetDialogListener {
 
     private DetailTweetAdapter mAdapter;
     private ListView lvDetail;
@@ -75,7 +75,7 @@ public class DetailTweetActivity extends ActionBarActivity implements ComposeTwe
     }
 
     @Override
-    public void onFinishComposeTweet(Tweet tweet) {
+    public void onFinishComposeTweet(Tweet tweet, Tweet replyTo) {
         // Do nothing here as replies should not show up in your own feed
     }
 }

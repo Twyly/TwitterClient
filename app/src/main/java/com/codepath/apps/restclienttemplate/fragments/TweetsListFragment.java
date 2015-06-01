@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * Created by teddywyly on 5/28/15.
  */
-public abstract class TweetsListFragment extends Fragment implements ComposeTweetDialog.ComposteTweetDialogListener {
+public abstract class TweetsListFragment extends Fragment implements ComposeTweetDialog.ComposeTweetDialogListener {
 
     private TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
@@ -288,9 +288,10 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     }
 
 
-    public void onFinishComposeTweet(Tweet tweet) {
-        tweet.save();
-        aTweets.insert(tweet, 0);
+    public void onFinishComposeTweet(Tweet tweet, Tweet replytTo) {
+        if (replytTo == null) {
+            aTweets.insert(tweet, 0);
+        }
     }
 
     //================================================================================

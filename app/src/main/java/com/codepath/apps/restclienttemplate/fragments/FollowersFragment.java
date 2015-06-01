@@ -32,6 +32,8 @@ import java.util.ArrayList;
  */
 public class FollowersFragment extends Fragment {
 
+    private final static long DEFAULT_CURSOR_VALUE = -1;
+
     private UsersArrayAdapter aUsers;
     private ArrayList<User> users;
     private ListView lvUsers;
@@ -39,7 +41,7 @@ public class FollowersFragment extends Fragment {
     private ProgressBar pbProgress;
     private ProgressBar pbFooter;
 
-    private long cursor = 0;
+    private long cursor = DEFAULT_CURSOR_VALUE;
 
     private TwitterClient client;
 
@@ -62,10 +64,8 @@ public class FollowersFragment extends Fragment {
         client = TwitterApplication.getRestClient();
         users = new ArrayList<User>();
         aUsers = new UsersArrayAdapter(getActivity(), users);
-
         user = getArguments().getParcelable("user");
         forFollowers = getArguments().getBoolean("forFollowers");
-
     }
 
     @Override
@@ -78,7 +78,7 @@ public class FollowersFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //fetchTweets(0);
+                fetchUsers(DEFAULT_CURSOR_VALUE);
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
@@ -91,6 +91,7 @@ public class FollowersFragment extends Fragment {
         lvUsers.setOnScrollListener(new EndlessCursorScrollListener() {
             @Override
             public void onLoadMore(long nextCursor, int totalItemsCount) {
+                Log.d("NEXT C", nextCursor + "");
                 fetchUsers(nextCursor);
             }
 
@@ -109,7 +110,7 @@ public class FollowersFragment extends Fragment {
 
     private void fetchUsers(long cursor) {
 
-        if (cursor != 0) {
+        if (cursor != DEFAULT_CURSOR_VALUE) {
             setFooterProgressVisable(true);
         }
 
@@ -124,15 +125,14 @@ public class FollowersFragment extends Fragment {
         return new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                if (cursor == 0) {
+                if (cursor == DEFAULT_CURSOR_VALUE) {
                     aUsers.clear();
                     setupTeardownForInitialLoad(false);
                 }
-
-                Log.d("JSON RESPONSE", response.toString());
                 try {
                     JSONArray userJSON = response.getJSONArray("users");
                     FollowersFragment.this.cursor = response.getLong("next_cursor");
+                    Log.d("CURSOR", FollowersFragment.this.cursor + "");
                     ArrayList<User> newUsers = User.fromJSONArray(userJSON);
                     if (!newUsers.isEmpty()) {
                         aUsers.addAll(newUsers);
@@ -149,6 +149,7 @@ public class FollowersFragment extends Fragment {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("JSON RESPONSE", errorResponse.toString());
                 ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
                 swipeContainer.setRefreshing(false);
                 setFooterProgressVisable(false);

@@ -41,8 +41,8 @@ public class ComposeTweetDialog extends DialogFragment {
     private TwitterClient client;
     private Tweet replyToTweet;
 
-    public interface ComposteTweetDialogListener {
-        void onFinishComposeTweet(Tweet tweet);
+    public interface ComposeTweetDialogListener {
+        void onFinishComposeTweet(Tweet tweet, Tweet replyTo);
     }
 
 
@@ -178,8 +178,8 @@ public class ComposeTweetDialog extends DialogFragment {
         return new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Tweet newTweet = Tweet.fromJSON(response);
-                ComposteTweetDialogListener listener = (ComposteTweetDialogListener) getActivity();
-                listener.onFinishComposeTweet(newTweet);
+                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getActivity();
+                listener.onFinishComposeTweet(newTweet, replyToTweet);
                 dismiss();
             }
 

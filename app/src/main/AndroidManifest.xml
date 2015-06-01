@@ -70,11 +70,13 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
+            android:launchMode="singleTask"
             android:theme="@style/ProfileBarTheme" >
         </activity>
         <activity
             android:name=".activities.FollowersActivity"
             android:label="@string/title_activity_followers"
+            android:launchMode="singleTask"
             android:parentActivityName=".activities.ProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

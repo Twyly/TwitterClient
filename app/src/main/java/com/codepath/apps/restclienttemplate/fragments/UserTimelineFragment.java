@@ -137,6 +137,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     private void showFollowersActivity(User user, boolean forFollowers) {
         Intent i = new Intent(getActivity(), FollowersActivity.class);
+        i.putExtra("ParentClass", getActivity().getClass());
         i.putExtra("user", user);
         i.putExtra("forFollowers", forFollowers);
         startActivity(i);

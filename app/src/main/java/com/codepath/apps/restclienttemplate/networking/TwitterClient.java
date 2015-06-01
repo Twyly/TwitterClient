@@ -107,9 +107,9 @@ public class TwitterClient extends OAuthBaseClient {
         String apiURL = getApiUrl("followers/list.json");
         RequestParams params = new RequestParams();
         params.put("count", 25);
-        params.put("screenname", screenname);
-        if (cursor > 0) {
-            params.put("max_id", cursor);
+        params.put("screen_name", screenname);
+        if (cursor != -1) {
+            params.put("cursor", cursor);
         }
         getClient().get(apiURL, params, handler);
     }
@@ -118,8 +118,8 @@ public class TwitterClient extends OAuthBaseClient {
         String apiURL = getApiUrl("friends/list.json");
         RequestParams params = new RequestParams();
         params.put("count", 25);
-        params.put("screenname", screenname);
-        if (cursor > 0) {
+        params.put("screen_name", screenname);
+        if (cursor != -1) {
             params.put("cursor", cursor);
         }
         getClient().get(apiURL, params, handler);
