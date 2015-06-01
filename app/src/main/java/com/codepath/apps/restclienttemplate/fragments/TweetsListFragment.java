@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,6 +170,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                     currentUser = User.fromJSON(response);
                     showComposeDialog(tweet);
                 }
+
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
@@ -222,7 +225,67 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             public void profileClicked(User user) {
                 showProfileActivity(user);
             }
+            public void retweetClicked(Tweet tweet) { retweet(tweet); }
+            public void favoriteClicked(Tweet tweet) { favorite(tweet); }
         });
+    }
+
+    private void retweet(Tweet tweet) {
+        if (tweet.isRetweeted()) {
+            final CharSequence[] items = {"Undo retweet"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            builder.show();
+        } else {
+            final CharSequence[] items = {"Retweet"};
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            builder.show();
+        }
+    }
+
+    private void favorite(final Tweet tweet) {
+        if (tweet.isFavorited()) {
+            tweet.setFavorited(false);
+            aTweets.notifyDataSetChanged();
+            getClient().unfavorite(tweet.getUid(), new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    tweet.setFavorited(true);
+                    aTweets.notifyDataSetChanged();
+                }
+            });
+        } else {
+            tweet.setFavorited(true);
+            aTweets.notifyDataSetChanged();
+            getClient().favorite(tweet.getUid(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    tweet.setFavorited(false);
+                    aTweets.notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     // Networking

@@ -6,5 +6,6 @@
     <color name="theme_warning_red">#D73F3C</color>
     <color name="theme_twitter">@android:color/holo_blue_light</color>
     <color name="theme_dimmer">#4D000000</color>
-
+    <color name="theme_favorite_color">#FFAC33</color>
+    <color name="theme_retweet_color">#77B255</color>
 </resources>

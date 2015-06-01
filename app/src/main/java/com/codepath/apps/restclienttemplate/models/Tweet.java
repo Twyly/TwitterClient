@@ -52,6 +52,27 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "media_height")
     private int mediaHeight;
 
+    private boolean favorited;
+    private boolean retweeted;
+
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+
 
     public String getBody() {
         return body;
@@ -62,9 +83,6 @@ public class Tweet extends Model implements Parcelable {
     public User getUser() {
         return user;
     }
-//    public String getCreatedAt() {
-//        return createdAt;
-//    }
     public int getFavoriteCount() {
         return favoriteCount;
     }
@@ -166,6 +184,8 @@ public class Tweet extends Model implements Parcelable {
             tweet.user = User.findOrCreateFromJSON(json.getJSONObject("user"));
             tweet.retweetCount = json.getInt("retweet_count");
             tweet.favoriteCount = json.getInt("favorite_count");
+            tweet.retweeted = json.getBoolean("retweeted");
+            tweet.favorited = json.getBoolean("favorited");
             JSONArray media = json.getJSONObject("entities").optJSONArray("media");
             if (media != null) {
                 tweet.mediaURL = media.getJSONObject(0).optString("media_url");
@@ -202,6 +222,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeInt(mediaWidth);
         dest.writeInt(mediaHeight);
         dest.writeParcelable(retweetedFrom, flags);
+        dest.writeByte((byte) (retweeted ? 1 : 0));
+        dest.writeByte((byte) (favorited ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR
@@ -228,6 +250,9 @@ public class Tweet extends Model implements Parcelable {
         mediaWidth = in.readInt();
         mediaHeight = in.readInt();
         retweetedFrom = in.readParcelable(User.class.getClassLoader());
+        retweeted = in.readByte() != 0;
+        favorited = in.readByte() != 0;
+
     }
 
 }

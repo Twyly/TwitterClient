@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     public interface TweetsArrayAdapterListener {
         public void replyClicked(Tweet tweet);
+        public void retweetClicked(Tweet tweet);
+        public void favoriteClicked(Tweet tweet);
         public void profileClicked(User user);
     }
 
@@ -120,6 +124,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             }
         });
 
+        viewHolder.retweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.retweetClicked(tweet);
+            }
+        });
+
+        viewHolder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.favoriteClicked(tweet);
+            }
+        });
+
         viewHolder.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,12 +146,37 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             }
         });
 
+
         viewHolder.username.setText(TextUtils.concat(formatter.usernameSpanned(tweet.getUser().getName()), " ", formatter.screenameSpanned(tweet.getUser().getScreenName())));
         viewHolder.body.setText(tweet.getBody());
         viewHolder.timestamp.setText(getRelativeTimeAgo(tweet.getTimestamp()));
 
         viewHolder.profile.setImageResource(android.R.color.transparent);
         viewHolder.preview.setImageResource(0);
+
+        // Set to theme_hightlight
+        Drawable fIcon = getContext().getResources().getDrawable(R.drawable.ic_favorite);
+
+        if (tweet.isFavorited()) {
+            viewHolder.favorite.setTextColor(getContext().getResources().getColor(R.color.theme_favorite_color));
+            fIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_favorite_color), PorterDuff.Mode.MULTIPLY);
+        } else {
+            viewHolder.favorite.setTextColor(getContext().getResources().getColor(R.color.theme_text_detail));
+            fIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_text_detail), PorterDuff.Mode.MULTIPLY);
+        }
+        viewHolder.favorite.setCompoundDrawablesWithIntrinsicBounds(fIcon, null, null, null);
+
+
+        Drawable rIcon = getContext().getResources().getDrawable(R.drawable.ic_retweet);
+        if (tweet.isRetweeted()) {
+            viewHolder.retweet.setTextColor(getContext().getResources().getColor(R.color.theme_retweet_color));
+            rIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_retweet_color), PorterDuff.Mode.MULTIPLY);
+        } else {
+            viewHolder.retweet.setTextColor(getContext().getResources().getColor(R.color.theme_text_detail));
+            rIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_text_detail), PorterDuff.Mode.MULTIPLY);
+        }
+        viewHolder.retweet.setCompoundDrawablesWithIntrinsicBounds(rIcon, null, null, null);
+
 
         viewHolder.retweet.setText(Integer.toString(tweet.getRetweetCount()));
         viewHolder.favorite.setText(Integer.toString(tweet.getFavoriteCount()));
