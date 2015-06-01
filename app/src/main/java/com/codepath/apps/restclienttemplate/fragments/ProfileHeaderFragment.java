@@ -66,7 +66,7 @@ public class ProfileHeaderFragment extends Fragment {
         ivProfile.setImageResource(0);
         ivProfileBackground.setImageResource(0);
         Picasso.with(getActivity()).load(user.getProfileImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfile);
-        Picasso.with(getActivity()).load(user.getBackgroundImageUrl()).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfileBackground);
+        Picasso.with(getActivity()).load(user.getBackgroundImageUrl()).placeholder(R.color.theme_text_detail).fit().transform(ProfileImageHelper.roundTransformation()).into(ivProfileBackground);
     }
 
     @Override

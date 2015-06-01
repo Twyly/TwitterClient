@@ -84,6 +84,8 @@ public class UserTimelineFragment extends TweetsListFragment {
         ft.commit();
         getLvTweets().addHeaderView(header);
 
+        fetchTweets(0);
+
         return v;
 
 //        actionBarBackgroundDrawable = getResources().getDrawable(R.drawable.abc_btn_radio_material);
@@ -212,7 +214,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     @Override
     protected String cacheName() {
-        return user.getScreenName();
+        return null;
     }
 
     @Override

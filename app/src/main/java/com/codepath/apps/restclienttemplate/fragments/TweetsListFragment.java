@@ -51,6 +51,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
     private ProgressBar pbProgress;
+    private ProgressBar pbFooter;
 
     private TwitterClient client;
     public User currentUser;
@@ -81,7 +82,10 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         return pbProgress;
     }
 
-    protected abstract String cacheName();
+    protected String cacheName() {
+        return null;
+    };
+
     protected String username() {
         return null;
     }
@@ -96,7 +100,8 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
-        setupViewsAndAdapter(v);
+        setupViewsAndAdapter(v, savedInstanceState);
+
         if (!loadCachedTweets(cacheName())) {
             setupTeardownForInitialLoad(true);
         }
@@ -110,13 +115,12 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
 
     }
 
-    private void setupViewsAndAdapter(View v) {
+    private void setupViewsAndAdapter(View v, Bundle savedInstanceState) {
 
         // Add twitter bird
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
         pbProgress = (ProgressBar) v.findViewById(R.id.pbProgress);
-        lvTweets.setAdapter(aTweets);
         lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -127,17 +131,31 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //fetchTweets(0);
+                fetchTweets(0);
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
         getLvTweets().setOnScrollListener(new EndlessTweetScrollListener(10) {
             @Override
             public void onLoadMore(long maxID, int totalItemsCount) {
+                Log.d("LOAD MORE", maxID + "");
                 fetchTweets(maxID);
             }
         });
         getPbProgress().setVisibility(View.INVISIBLE);
+
+        View footer = getLayoutInflater(savedInstanceState).inflate(R.layout.footer_progress, null);
+        pbFooter = (ProgressBar)footer.findViewById(R.id.pbFooter);
+        lvTweets.addFooterView(footer);
+        lvTweets.setAdapter(aTweets);
+    }
+
+    private void setFooterProgressVisable(boolean visable) {
+        if (visable) {
+            pbFooter.setVisibility(View.VISIBLE);
+        } else {
+            pbFooter.setVisibility(View.GONE);
+        }
     }
 
     public void showComposeDialog(final Tweet tweet) {
@@ -208,7 +226,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     }
 
     // Networking
-    private void fetchTweets(final long maxID) {
+    public void fetchTweets(final long maxID) {
 
         if (!getClient().isNetworkAvailable()) {
             ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.NETWORK);
@@ -232,6 +250,11 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                 }
             });
         } else {
+
+            if (maxID > 0) {
+                setFooterProgressVisable(true);
+            }
+
             getClient().getTweets(fetchType(), maxID, username(), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -247,16 +270,17 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                         addAll(newTweets);
                     }
                     setRefreshing(false);
+                    setFooterProgressVisable(false);
                     onSuccessfulFetch();
 
                 }
-
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Log.d("ERROR", errorResponse.toString());
                     ErrorHelper.showErrorAlert(getActivity(), ErrorHelper.ErrorType.GENERIC);
                     setRefreshing(false);
+                    setFooterProgressVisable(true);
                     onFailedFetch();
                 }
             });
@@ -296,6 +320,10 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     }
 
     protected boolean loadCachedTweets(String cacheName) {
+        if (cacheName == null) {
+            return false;
+        }
+
         JSONArray cachedArray = getCachedJSONResponse(cacheName);
         if (cachedArray == null) {
             return false;
@@ -307,6 +335,9 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     }
 
     protected void cacheTweets(JSONArray jsonArray, String cacheName) {
+        if (cacheName == null) {
+            return;
+        }
         cacheJSONResponse(jsonArray, cacheName);
     }
 
