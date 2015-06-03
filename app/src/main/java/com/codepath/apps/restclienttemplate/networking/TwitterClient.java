@@ -141,10 +141,11 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void retweet(long id, AsyncHttpResponseHandler handler) {
-        String apiURL = getApiUrl("statuses/retweet/:id.json");
+        String idString = Long.toString(id);
+        String apiURL = getApiUrl("statuses/retweet/" + idString + ".json");
         RequestParams params = new RequestParams();
         params.put("id", id);
-        getClient().post(apiURL, params, handler);
+        getClient().post(apiURL, null, handler);
     }
 
     public void destroyTweet(long id, AsyncHttpResponseHandler handler) {

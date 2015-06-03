@@ -42,6 +42,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 
     @Override
     protected void onSuccessfulRetweet(Tweet tweet) {
+        super.onSuccessfulRetweet(tweet);
         add(tweet);
     }
 

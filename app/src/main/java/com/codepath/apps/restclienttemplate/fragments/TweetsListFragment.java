@@ -119,7 +119,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
             currentUser = cachedUser;
         }
 
-        //fetchTweets(0);
+        fetchTweets(0);
         return v;
 
     }
@@ -240,29 +240,32 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private void retweet(final Tweet tweet) {
         ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.DialogBaseTheme);
 
+
         if (tweet.isRetweeted()) {
-            final CharSequence[] items = {"Undo retweet"};
+            // Delete Retweet Not Implemented yet!
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(wrapper)
-                    .setItems(items, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            tweet.setRetweeted(false);
-                            aTweets.notifyDataSetChanged();
-                            getClient().destroyTweet(0, new JsonHttpResponseHandler(){
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                    super.onSuccess(statusCode, headers, response);
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                    tweet.setRetweeted(true);
-                                    aTweets.notifyDataSetChanged();                                }
-                            });
-                        }
-                    });
-            builder.show();
+//            final CharSequence[] items = {"Undo retweet"};
+//
+//            AlertDialog.Builder builder = new AlertDialog.Builder(wrapper)
+//                    .setItems(items, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            tweet.setRetweeted(false);
+//                            aTweets.notifyDataSetChanged();
+//                            getClient().destroyTweet(0, new JsonHttpResponseHandler(){
+//                                @Override
+//                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                                    super.onSuccess(statusCode, headers, response);
+//                                }
+//
+//                                @Override
+//                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                                    tweet.setRetweeted(true);
+//                                    aTweets.notifyDataSetChanged();                                }
+//                            });
+//                        }
+//                    });
+//            builder.show();
         } else {
 
             final CharSequence[] items = {"Retweet"};
@@ -272,6 +275,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             tweet.setRetweeted(true);
+                            tweet.incrementRetweentCount();
                             aTweets.notifyDataSetChanged();
                             getClient().retweet(tweet.getUid(), new JsonHttpResponseHandler() {
                                 @Override
@@ -284,6 +288,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                                     tweet.setRetweeted(false);
+                                    tweet.decrementFavoriteCount();
                                     aTweets.notifyDataSetChanged();
                                 }
                             });

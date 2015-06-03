@@ -178,7 +178,7 @@ public class ComposeTweetDialog extends DialogFragment {
         return new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Tweet newTweet = Tweet.fromJSON(response);
-                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getActivity();
+                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getParentFragment();
                 listener.onFinishComposeTweet(newTweet, replyToTweet);
                 dismiss();
             }
