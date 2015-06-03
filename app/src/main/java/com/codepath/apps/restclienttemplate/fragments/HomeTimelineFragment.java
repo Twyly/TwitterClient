@@ -41,6 +41,11 @@ public class HomeTimelineFragment extends TweetsListFragment {
     public static final String CACHE_NAME = "Timeline";
 
     @Override
+    protected void onSuccessfulRetweet(Tweet tweet) {
+        add(tweet);
+    }
+
+    @Override
     protected String cacheName() {
         return CACHE_NAME;
     }

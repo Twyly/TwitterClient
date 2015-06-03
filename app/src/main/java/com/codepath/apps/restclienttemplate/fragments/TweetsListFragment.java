@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import android.support.v7.app.AlertDialog;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,17 +62,18 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     public ListView getLvTweets() {
         return lvTweets;
     }
-
     public TwitterClient getClient() {
         return client;
     }
-
     public User getCurrentUser() {
         return currentUser;
     }
 
     public void addAll(List<Tweet> tweets) {
         aTweets.addAll(tweets);
+    }
+    public void add(Tweet tweet) {
+        aTweets.add(tweet);
     }
     public void clearAll() {
         aTweets.clear();
@@ -97,6 +99,11 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     protected void onFailedFetch() {
 
     }
+
+    protected void onSuccessfulRetweet(Tweet tweet) {
+
+    }
+
     protected abstract TwitterClient.TweetSearchType fetchType();
 
     @Override
@@ -230,25 +237,56 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
         });
     }
 
-    private void retweet(Tweet tweet) {
+    private void retweet(final Tweet tweet) {
+        ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.DialogBaseTheme);
+
         if (tweet.isRetweeted()) {
             final CharSequence[] items = {"Undo retweet"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(wrapper)
                     .setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            tweet.setRetweeted(false);
+                            aTweets.notifyDataSetChanged();
+                            getClient().destroyTweet(0, new JsonHttpResponseHandler(){
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    super.onSuccess(statusCode, headers, response);
+                                }
 
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    tweet.setRetweeted(true);
+                                    aTweets.notifyDataSetChanged();                                }
+                            });
                         }
                     });
             builder.show();
         } else {
+
             final CharSequence[] items = {"Retweet"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+            AlertDialog.Builder builder = new AlertDialog.Builder(wrapper)
                     .setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            tweet.setRetweeted(true);
+                            aTweets.notifyDataSetChanged();
+                            getClient().retweet(tweet.getUid(), new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    // Add Retweeted Tweet to Array
+                                    Tweet newTweet = Tweet.fromJSON(response);
+                                    onSuccessfulRetweet(tweet);
+                                }
 
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    tweet.setRetweeted(false);
+                                    aTweets.notifyDataSetChanged();
+                                }
+                            });
                         }
                     });
             builder.show();
@@ -258,6 +296,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
     private void favorite(final Tweet tweet) {
         if (tweet.isFavorited()) {
             tweet.setFavorited(false);
+            tweet.decrementFavoriteCount();
             aTweets.notifyDataSetChanged();
             getClient().unfavorite(tweet.getUid(), new JsonHttpResponseHandler(){
                 @Override
@@ -267,11 +306,13 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     tweet.setFavorited(true);
+                    tweet.incrementFavoriteCount();
                     aTweets.notifyDataSetChanged();
                 }
             });
         } else {
             tweet.setFavorited(true);
+            tweet.incrementFavoriteCount();
             aTweets.notifyDataSetChanged();
             getClient().favorite(tweet.getUid(), new JsonHttpResponseHandler() {
                 @Override
@@ -282,6 +323,7 @@ public abstract class TweetsListFragment extends Fragment implements ComposeTwee
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     tweet.setFavorited(false);
+                    tweet.decrementFavoriteCount();
                     aTweets.notifyDataSetChanged();
                 }
             });

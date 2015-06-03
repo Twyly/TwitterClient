@@ -155,25 +155,25 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.preview.setImageResource(0);
 
         // Set to theme_hightlight
-        Drawable fIcon = getContext().getResources().getDrawable(R.drawable.ic_favorite);
+        Drawable fIcon;
 
         if (tweet.isFavorited()) {
+            fIcon = getContext().getResources().getDrawable(R.drawable.ic_favorite_yellow);
             viewHolder.favorite.setTextColor(getContext().getResources().getColor(R.color.theme_favorite_color));
-            fIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_favorite_color), PorterDuff.Mode.MULTIPLY);
         } else {
+            fIcon = getContext().getResources().getDrawable(R.drawable.ic_favorite);
             viewHolder.favorite.setTextColor(getContext().getResources().getColor(R.color.theme_text_detail));
-            fIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_text_detail), PorterDuff.Mode.MULTIPLY);
         }
         viewHolder.favorite.setCompoundDrawablesWithIntrinsicBounds(fIcon, null, null, null);
 
 
-        Drawable rIcon = getContext().getResources().getDrawable(R.drawable.ic_retweet);
+        Drawable rIcon;
         if (tweet.isRetweeted()) {
+            rIcon = getContext().getResources().getDrawable(R.drawable.ic_retweet_green);
             viewHolder.retweet.setTextColor(getContext().getResources().getColor(R.color.theme_retweet_color));
-            rIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_retweet_color), PorterDuff.Mode.MULTIPLY);
         } else {
+            rIcon = getContext().getResources().getDrawable(R.drawable.ic_retweet);
             viewHolder.retweet.setTextColor(getContext().getResources().getColor(R.color.theme_text_detail));
-            rIcon.mutate().setColorFilter(getContext().getResources().getColor(R.color.theme_text_detail), PorterDuff.Mode.MULTIPLY);
         }
         viewHolder.retweet.setCompoundDrawablesWithIntrinsicBounds(rIcon, null, null, null);
 

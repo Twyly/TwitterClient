@@ -4,6 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="profile_image_view_length">56dp</dimen>
+    <dimen name="profile_image_view_large_length">90dp</dimen>
+
     <dimen name="action_button_text_size">12sp</dimen>
     <dimen name="activity_base_margin">10dp</dimen>
     <dimen name="text_label_vertical_padding">5dp</dimen>

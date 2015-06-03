@@ -22,14 +22,14 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-* [ ] User can view following / followers list through the profile
-* [ ] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
-* [ ] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
+* [x] User can view following / followers list through the profile
+* [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures (Robust is very relative in this case - still working on it!)
+* [x] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
 * [x] User can **"reply" to any tweet on their home timeline**
 * [x] The user that wrote the original tweet is automatically "@" replied in compose
 * [x] User can click on a tweet to be **taken to a "detail view"** of that tweet
-* [ ] User can take favorite (and unfavorite) or retweet actions on a tweet
-* [ ] Improve the user interface and theme the app to feel twitter branded
+* [x] User can take favorite (and unfavorite) or retweet actions on a tweet
+* [x] Improve the user interface and theme the app to feel twitter branded
 * [ ] User can **search for tweets matching a particular query** and see results
 
 The following **bonus** features are implemented:
@@ -38,7 +38,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] User Profile looks has resizing profile view
+* [x] Offline persistence for mentions and user timeline through standard preferences
 
 
 ## Video Walkthrough 

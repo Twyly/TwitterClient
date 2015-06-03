@@ -81,5 +81,8 @@
         <item name="background">@android:color/transparent</item>
     </style>
 
+    <style name="DialogBaseTheme" parent="@style/Theme.AppCompat">
+
+    </style>
 
 </resources>

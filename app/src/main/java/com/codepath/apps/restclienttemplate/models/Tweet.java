@@ -55,6 +55,18 @@ public class Tweet extends Model implements Parcelable {
     private boolean favorited;
     private boolean retweeted;
 
+    public void incrementFavoriteCount() {
+        this.favoriteCount++;
+    }
+    public void decrementFavoriteCount() {
+        this.favoriteCount--;
+    }
+    public void incrementRetweentCount() {
+        this.retweetCount++;
+    }
+    public void decrementRetweetCount() {
+        this.retweetCount--;
+    }
 
     public void setFavorited(boolean favorited) {
         this.favorited = favorited;

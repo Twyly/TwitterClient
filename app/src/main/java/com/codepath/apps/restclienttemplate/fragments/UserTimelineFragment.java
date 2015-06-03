@@ -86,33 +86,41 @@ public class UserTimelineFragment extends TweetsListFragment {
 
         fetchTweets(0);
 
-        return v;
 
 //        actionBarBackgroundDrawable = getResources().getDrawable(R.drawable.abc_btn_radio_material);
 //        actionBarBackgroundDrawable.setAlpha(0);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(actionBarBackgroundDrawable);
 
-//        getLvTweets().setOnScrollListener(new EndlessTweetScrollListener(10) {
-//            @Override
-//            public void onLoadMore(long maxID, int totalItemsCount) {
-//                fetchTweets(maxID);
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                final int headerHeight = header.getHeight() - ((AppCompatActivity) getActivity()).getSupportActionBar().getHeight();
-//                Log.d("HEIGHT", headerHeight + "");
-//                Log.d("HEIGHT", header.getTop() + "");
-////                final float ratio = (float) Math.min(Math.max(header.getTop(), 0), headerHeight) / headerHeight;
-////                final int newAlpha = (int) (ratio * 255);
-////                actionBarBackgroundDrawable.setAlpha(255);
-////                float scalingFactor = 0.51f; // scale down to half the size
-////                if (scalingFactor > 0.5f) {
-////                    fragmentProfile.scaleProfileImage(scalingFactor);
-////                }
-//                super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-//            }
-//        });
+        getLvTweets().setOnScrollListener(new EndlessTweetScrollListener(10) {
+            @Override
+            public void onLoadMore(long maxID, int totalItemsCount) {
+                fetchTweets(maxID);
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                final float headerHeight = header.getHeight() - ((AppCompatActivity) getActivity()).getSupportActionBar().getHeight();
+                Log.d("HEIGHT", headerHeight + "");
+                Log.d("HEIGHT", header.getTop() + "");
+
+                float head = header.getTop() * -1;
+                float base = (float)(headerHeight / 2.5);
+                float scalingFactor = 1 - (head/base);
+
+                if (scalingFactor > 0.5f) {
+                    fragmentProfile.scaleProfileImage(scalingFactor);
+                }
+
+//                final float ratio = (float) Math.min(Math.max(header.getTop(), 0), headerHeight) / headerHeight;
+//                final int newAlpha = (int) (ratio * 255);
+//                actionBarBackgroundDrawable.setAlpha(255);
+
+                super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+            }
+        });
+
+        return v;
+
 
 //        Log.d("SCREENNAME", user.getScreenName());
 //
